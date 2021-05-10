@@ -1,0 +1,3 @@
+fix handleSelection function to work
+
+FightPage line 45 //   //intentar arreglar este estado para hacerlo en una linea
