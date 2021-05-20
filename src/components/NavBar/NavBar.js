@@ -48,16 +48,6 @@ function NavBar(props) {
         <HideOnScroll {...props}>
           <AppBar>
             <Toolbar>
-              <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="open drawer"
-                component={RouterLink}
-                to="/liked-movies"
-              >
-                <FavoriteBorderIcon />
-              </IconButton>
               <Typography
                 variant="h6"
                 className={classes.title}
@@ -65,7 +55,7 @@ function NavBar(props) {
                 component={RouterLink}
                 to="/"
               >
-                Movie Battle App
+                movieBattle
               </Typography>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
@@ -82,6 +72,16 @@ function NavBar(props) {
                   value={resetValue ? '' : undefined}
                 />
               </div>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="open drawer"
+                component={RouterLink}
+                to="/liked-movies"
+              >
+                <FavoriteBorderIcon />
+              </IconButton>
             </Toolbar>
           </AppBar>
         </HideOnScroll>

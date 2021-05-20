@@ -31,8 +31,6 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import LikedMovies from '../../pages/LikedMovies';
 
 function MovieDetails(props) {
-  let { id } = useParams();
-
   const {
     idArray,
     handleSelection,
@@ -42,6 +40,8 @@ function MovieDetails(props) {
     currentMovieList,
     handleLikes,
   } = props;
+
+  let { id } = useParams();
 
   const [currentDetails, setCurrentDetails] = useState('');
   const [movie, setMovie] = useState();

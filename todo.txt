@@ -11,9 +11,12 @@
 - ✅persist all to local storage and dont go away when closing browser or transitioning thorough pages
 - ✅fix bug with making searched movies fight
 - ✅Make hearth icon color red(secondary) when clicked and save it to localStorage
-- improve liked movies page
+- ✅ improve liked movies page
+- ✅add likedMoviesPage delete button functionality
+- fix weird bug with data desapearing and setting localStorage to ""
+
+- deploy and announce working on refactor to useContext fist and then redux
 - add useContext, Custom Hooks (input)
-- deploy and announce working on refactor to redux
 -begin with refactor
 
 

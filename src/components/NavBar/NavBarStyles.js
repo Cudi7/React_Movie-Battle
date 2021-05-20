@@ -6,6 +6,7 @@ const useNavBarStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
@@ -15,6 +16,7 @@ const useNavBarStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
+    marginLeft: theme.spacing(2),
   },
   search: {
     position: 'relative',

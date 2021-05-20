@@ -3,14 +3,12 @@ import { red } from '@material-ui/core/colors';
 
 const useMovieDetailsStyles = makeStyles((theme) => ({
   root: {
-    marginTop: '2rem',
-    boxShadow: '1px 2px 3px 0 rgba(0,0,0,0.4)'
+    marginTop: '7rem',
+    boxShadow: '1px 2px 3px 0 rgba(0,0,0,0.4)',
   },
   media: {
     transition: 'all 0.3s linear',
-    margin: '0 auto'
-
-
+    margin: '0 auto',
   },
   expand: {
     transform: 'rotate(0deg)',

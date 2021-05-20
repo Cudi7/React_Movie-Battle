@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Hero from '../components/Hero/Hero';
 import NavBar from '../components/NavBar/NavBar';
+import NavBarSecondary from '../components/NavBar/NavBarSecondary';
 import Movies from '../components/Movies/Movies';
 import { Grid } from '@material-ui/core';
 import { fetchMovie } from '../api/api';
@@ -19,6 +20,7 @@ function MovieApp() {
   const [fightValues, setFightValues] = useState({});
   const [figthersId, setFigthersId] = useState([]);
   const [likedMovies, setLikedMovies] = useState([]);
+  const [redirect, setRedirect] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +38,6 @@ function MovieApp() {
   }, [searchTerm]);
 
   useEffect(() => {
-    console.log('changing like button...');
     handleVal(currentMovieList);
   }, [currentMovieList]);
 
@@ -114,6 +115,7 @@ function MovieApp() {
           </Grid>
         </Route>
         <Route exact path="/details/:id">
+          <NavBarSecondary />
           <MovieDetails
             idArray={figthersId}
             handleSelection={handleSelection}
@@ -126,6 +128,7 @@ function MovieApp() {
           />
         </Route>
         <Route exact path="/fight">
+          <NavBarSecondary />
           <FightPage
             // setFightValues={setFightValues}
             fightValues={fightValues}
@@ -136,6 +139,7 @@ function MovieApp() {
           />
         </Route>
         <Route exact path="/liked-movies">
+          <NavBarSecondary />
           <LikedMovies
             currentMovieList={currentMovieList}
             setCurrentMovieList={setCurrentMovieList}

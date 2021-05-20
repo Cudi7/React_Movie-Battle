@@ -1,12 +1,89 @@
-# Getting Started with Create React App
+# React Movie Battle App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> React Movie App v1.0 build without useContext or Redux (I know, its been crazy believe me)
 
-## Available Scripts
+## Table of contents
 
-In the project directory, you can run:
+- [General info](#general-info)
+- [Next](#next)
+- [Setup](#setup)
+- [Code Examples](#code-examples)
+- [Features](#features)
+- [Status](#status)
+- [Contact](#contact)
 
-### `npm start`
+## General info
+
+Following my training I decided to create an app that I could add everything I know about React, I decided to not use Redux because I didn't wanted to be the "Redux for all guy" and it has been a great mistake
+
+## Next
+
+This has been very tougth, keep in mind that I only wanted to use useState because I wanted to do it without tools that simplified the code of the app, because it felt like "cheating", tools like Redux or useContext.
+
+And you know what? worst decision ever, it's been a mess.
+
+Now I'm working on V2.0 which will use Redux and refactoring this version to use useContext
+
+## Code Examples
+
+```
+export const todosSlice = createSlice({
+  name: 'todos',
+  initialState: [],
+  reducers: {
+    addedTodo: (state, action) => {
+      state.push({
+        id: uuid(),
+        author: action.payload.name || 'anonymous',
+        description: action.payload.description,
+        completed: false,
+        public: action.payload.public || false,
+      });
+    },
+    toggledCompleted: (state, action) => {
+      const index = state.findIndex((todo) => todo.id === action.payload);
+
+      state[index].completed = !state[index].completed;
+    },
+    toggledEditing: (state, action) => {
+      const index = state.findIndex((todo) => todo.id === action.payload);
+
+      state[index].editing = !state[index].editing;
+    },
+    toggledPublic: (state, action) => {
+      const index = state.findIndex((todo) => todo.id === action.payload);
+
+      state[index].public = !state[index].public;
+    },
+    editedTodo: (state, action) => {
+      const index = state.findIndex((todo) => todo.id === action.payload.id);
+
+      state[index].description = action.payload.description;
+    },
+    deletedTodo: (state, action) => {
+      const index = state.findIndex((todo) => todo.id === action.payload);
+
+      state.splice(index, 1);
+    },
+  },
+});
+```
+
+## Features
+
+The project is created with:
+
+- Hooks.
+- Custom Hooks (useLocalStorage and useInputForm).
+- Redux with a modern approach using Redux Toolkit.
+- Material UI
+- React Router
+- Ducks pattern
+- Logical convention names, AKA past tense in redux actions, because when an anction has been dispatched it means that it has already happened, so its doesn't make sense to name it ADD or DELETE, it should be ADDED, or DELETED or even better todo/addedTodo or todo/removedTodo
+
+## Setup
+
+### `npm install & npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -14,57 +91,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
+## Status
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Finished, but, hopping to add more features like login, logout and register using node/express and mongodb/mongoose
 
-### `npm run build`
+## Contact
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Created by Cudi - feel free to contact me!
