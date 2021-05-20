@@ -49,7 +49,7 @@ function CardFight(props) {
   const { movieComparative, wins } = props;
 
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -75,9 +75,6 @@ function CardFight(props) {
       />
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -93,15 +90,21 @@ function CardFight(props) {
         <CardContent>
           <List>
             {movieComparative.map((el, i) =>
-              el.key !== 'Poster' ? (
+              el.key !== 'Poster' &&
+              el.key !== 'Title' &&
+              el.key !== 'imdbID' ? (
                 <ListItem
                   key={i}
                   divider={
                     movieComparative.indexOf(el) < movieComparative.length - 1
                   }
                   style={{
-                    border: el.winner && '1px solid rgba(3, 192, 74, 0.6)',
-                    backgroundColor: el.winner && 'rgba(3, 192, 74, 0.2)',
+                    border: el.winner
+                      ? '1px solid rgba(3, 192, 74, 0.3)'
+                      : '1px solid rgba(255, 0, 0, 0.3)',
+                    backgroundColor: el.winner
+                      ? 'rgba(3, 192, 74, 0.2)'
+                      : 'rgba(255, 0, 0, 0.2)',
                   }}
                 >
                   <Hidden xsDown={true}>

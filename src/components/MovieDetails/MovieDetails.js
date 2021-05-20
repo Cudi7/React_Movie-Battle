@@ -26,10 +26,25 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import MovieIcon from '@material-ui/icons/Movie';
 import { Link as RouterLink } from 'react-router-dom';
 import { formatedDataDetails } from '../../utils/formatedData';
+import FightModal from '../Modal/FightModal';
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import LikedMovies from '../../pages/LikedMovies';
 
-function MovieDetails() {
+function MovieDetails(props) {
   let { id } = useParams();
-  const [currentMovieList, setCurrentMovieList] = useState('');
+
+  const {
+    idArray,
+    handleSelection,
+    primaryMovie,
+    secondaryMovie,
+    handleReset,
+    currentMovieList,
+    handleLikes,
+  } = props;
+
+  const [currentDetails, setCurrentDetails] = useState('');
+  const [movie, setMovie] = useState();
   const [detailsObject, setDetailsObject] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [height, setHeight] = useState('400px');
@@ -47,12 +62,15 @@ function MovieDetails() {
 
       const detailsObject = formatedDataDetails(data);
 
-      setCurrentMovieList(data);
+      setCurrentDetails(data);
       setDetailsObject(detailsObject);
+      setMovie(currentMovieList.find((el) => el.imdbID === id));
     };
 
     id && handleDetailsFetch();
   }, [id]);
+
+  const selected = idArray.find((el) => el === currentDetails.imdbID);
 
   return (
     <>
@@ -62,33 +80,68 @@ function MovieDetails() {
           <CardHeader
             avatar={
               <Avatar aria-label="Rated" className={classes.avatar}>
-                {currentMovieList.Rated}
+                {currentDetails.Rated}
               </Avatar>
             }
-            title={currentMovieList.Title}
-            subheader={`Released: ${currentMovieList.Released}`}
+            title={currentDetails.Title}
+            subheader={`Released: ${currentDetails.Released}`}
           />
           <CardMedia
             component="img"
             className={classes.media}
-            image={currentMovieList.Poster}
-            title={currentMovieList.Title}
-            alt={currentMovieList.Title}
+            image={currentDetails.Poster}
+            title={currentDetails.Title}
+            alt={currentDetails.Title}
             height={height}
             style={{ maxWidth: '300px' }}
           />
           <CardContent>
             <Typography variant="body2" color="textSecondary" component="p">
-              {currentMovieList.Plot}
+              {currentDetails.Plot}
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
             <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
+              <FavoriteIcon
+                color={movie?.liked ? 'secondary' : 'inherit'}
+                onClick={() => handleLikes(currentDetails.imdbID)}
+              />
             </IconButton>
-            <Button variant="contained" color="secondary">
-              Fight!
-            </Button>
+            {!primaryMovie || !secondaryMovie ? (
+              <Button
+                disabled={selected ? true : false}
+                variant="contained"
+                color="secondary"
+                style={{ marginLeft: 'auto' }}
+                onClick={
+                  primaryMovie
+                    ? () =>
+                        handleSelection(
+                          movie,
+                          'secondary',
+                          currentDetails.imdbID
+                        )
+                    : () =>
+                        handleSelection(movie, 'primary', currentDetails.imdbID)
+                }
+              >
+                {idArray.find((el) => el === currentDetails.imdbID)
+                  ? primaryMovie
+                    ? 'First Fighter'
+                    : 'Second Fighter'
+                  : 'Select Fighter'}
+              </Button>
+            ) : (
+              <>
+                <FightModal
+                  primaryMovie={primaryMovie}
+                  secondaryMovie={secondaryMovie}
+                  handleSelection={handleSelection}
+                  handleReset={handleReset}
+                />
+                <RotateLeftIcon onClick={handleReset} cursor="pointer" />
+              </>
+            )}
             <Button
               variant="outlined"
               style={{ marginLeft: '1.5vw' }}

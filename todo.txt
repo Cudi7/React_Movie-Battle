@@ -1,3 +1,19 @@
-fix handleSelection function to work
 
-FightPage line 45 //   //intentar arreglar este estado para hacerlo en una linea
+
+
+
+- ✅FIx bug with searchbar when delete words
+- ✅Add little image next to description
+- ✅when click searchresult, display it first on the list and delete last result
+- ✅fix show winner button, make it a better loking hero or card
+- ✅fix comparation (only works with the first result or someting lke this)
+- ✅Fix bug when searching that the searchresult stays and pops up
+- ✅persist all to local storage and dont go away when closing browser or transitioning thorough pages
+- ✅fix bug with making searched movies fight
+- ✅Make hearth icon color red(secondary) when clicked and save it to localStorage
+- improve liked movies page
+- add useContext, Custom Hooks (input)
+- deploy and announce working on refactor to redux
+-begin with refactor
+
+

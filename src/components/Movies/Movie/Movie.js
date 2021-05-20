@@ -10,17 +10,25 @@ import Typography from '@material-ui/core/Typography';
 import useMovieStyles from './MovieStyles';
 import { useHistory } from 'react-router';
 import FightModal from '../../Modal/FightModal';
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 
 function Movie(props) {
   const classes = useMovieStyles();
-  const { movie, handleSelection, primaryMovie, secondaryMovie } = props;
+  const {
+    movie,
+    handleSelection,
+    primaryMovie,
+    secondaryMovie,
+    id,
+    handleReset,
+  } = props;
   let history = useHistory();
 
   const handleClick = (id) => {
     history.push(`/details/${id}`);
   };
 
-  const handleSingleMovieData = () => {};
+  const selected = id.find((el) => el === movie.imdbID);
 
   return (
     <Card className={classes.root}>
@@ -53,24 +61,33 @@ function Movie(props) {
         </Button>
         {!primaryMovie || !secondaryMovie ? (
           <Button
+            disabled={selected ? true : false}
             size="small"
             variant="contained"
             color="secondary"
             style={{ marginLeft: 'auto' }}
             onClick={
               primaryMovie
-                ? () => handleSelection(movie, 'secondary')
-                : () => handleSelection(movie, 'primary')
+                ? () => handleSelection(movie, 'secondary', movie.imdbID)
+                : () => handleSelection(movie, 'primary', movie.imdbID)
             }
           >
-            {primaryMovie ? 'Second Fighter' : 'First Fighter'}
+            {id.find((el) => el === movie.imdbID)
+              ? primaryMovie
+                ? 'First Fighter'
+                : 'Second Fighter'
+              : 'Select Fighter'}
           </Button>
         ) : (
-          <FightModal
-            primaryMovie={primaryMovie}
-            secondaryMovie={secondaryMovie}
-            handleSelection={handleSelection}
-          />
+          <>
+            <FightModal
+              primaryMovie={primaryMovie}
+              secondaryMovie={secondaryMovie}
+              handleSelection={handleSelection}
+              handleReset={handleReset}
+            />
+            <RotateLeftIcon onClick={handleReset} cursor="pointer" />
+          </>
         )}
       </CardActions>
     </Card>

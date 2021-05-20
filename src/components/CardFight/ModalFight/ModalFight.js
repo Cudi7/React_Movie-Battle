@@ -24,8 +24,6 @@ export default function ModalFight(props) {
   const [open, setOpen] = useState(false);
   const { winner } = props;
 
-  console.log(winner);
-
   const handleOpen = () => {
     setOpen(true);
   };

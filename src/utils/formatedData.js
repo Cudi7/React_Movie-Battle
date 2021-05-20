@@ -9,7 +9,8 @@ const formatedDataFight = (data) => {
       i === 'Metascore' ||
       i === 'imdbRating' ||
       i === 'imdbVotes' ||
-      i === 'BoxOffice'
+      i === 'BoxOffice' ||
+      i === 'imdbID'
     ) {
       detailsObject.push({ key: i, value: data[i] });
     }

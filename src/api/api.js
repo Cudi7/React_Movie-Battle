@@ -12,18 +12,16 @@ const fetchMovie = async (searchTerm, searchById) => {
 };
 
 const fetchInitialVal = async () => {
-  const initialMovies = window.localStorage.getItem('movies')
-    ? JSON.parse(window.localStorage.getItem('movies'))
-    : [];
+  const initialMovies = [];
 
   const titles = [
     'Birds of prey',
-    'Venom',
-    'Titanic',
-    '8 mile',
     'Joker',
-    'Pokemon',
+    'Titanic',
     'Totoro',
+    'Venom',
+    'Pokemon',
+    '8 mile',
     'Get Out',
     'Space Jam',
   ];
@@ -42,7 +40,6 @@ const fetchInitialVal = async () => {
         console.log(error.message);
       }
     }
-    window.localStorage.setItem('movies', JSON.stringify(initialMovies));
   }
 
   return initialMovies;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,11 +8,11 @@ import Slide from '@material-ui/core/Slide';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import { IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import useNavBarStyles from './NavBarStyles';
 
 import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
+import SearchItems from './SearchItems/SearchItems';
 
 function HideOnScroll(props) {
   const { children } = props;
@@ -28,8 +28,19 @@ function HideOnScroll(props) {
 
 function NavBar(props) {
   const classes = useNavBarStyles();
+  const [resetValue, setResetValue] = useState(false);
 
-  const { handleSearch } = props;
+  const {
+    handleSearch,
+    searchMovieList,
+    setSearchMovieList,
+    setCurrentMovieList,
+    currentMovieList,
+  } = props;
+
+  useEffect(() => {
+    setTimeout(() => setResetValue(false), 500);
+  }, [resetValue]);
 
   return (
     <>
@@ -42,11 +53,19 @@ function NavBar(props) {
                 className={classes.menuButton}
                 color="inherit"
                 aria-label="open drawer"
+                component={RouterLink}
+                to="/liked-movies"
               >
-                <MenuIcon />
+                <FavoriteBorderIcon />
               </IconButton>
-              <Typography variant="h6" className={classes.title} noWrap component={RouterLink} to="/">
-               Movie Battle App
+              <Typography
+                variant="h6"
+                className={classes.title}
+                noWrap
+                component={RouterLink}
+                to="/"
+              >
+                Movie Battle App
               </Typography>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
@@ -60,11 +79,21 @@ function NavBar(props) {
                   }}
                   inputProps={{ 'aria-label': 'search' }}
                   onChange={handleSearch}
+                  value={resetValue ? '' : undefined}
                 />
               </div>
             </Toolbar>
           </AppBar>
         </HideOnScroll>
+        {searchMovieList.length && (
+          <SearchItems
+            searchMovieList={searchMovieList}
+            setSearchMovieList={setSearchMovieList}
+            setCurrentMovieList={setCurrentMovieList}
+            currentMovieList={currentMovieList}
+            setResetValue={setResetValue}
+          />
+        )}
       </div>
     </>
   );

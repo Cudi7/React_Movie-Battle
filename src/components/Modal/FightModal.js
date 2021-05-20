@@ -2,7 +2,7 @@ import React from 'react';
 
 import Modal from '@material-ui/core/Modal';
 import useModalStyles from './FightModalStyles';
-import { Button, Link } from '@material-ui/core';
+import { Button, Link, Typography } from '@material-ui/core';
 import purple from '@material-ui/core/colors/purple';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -29,7 +29,7 @@ function FightModal(props) {
   const [open, setOpen] = React.useState(false);
 
   const classes = useModalStyles();
-  const { primaryMovie, secondaryMovie, handleSelection } = props;
+  const { primaryMovie, secondaryMovie, handleSelection, handleReset } = props;
 
   const handleOpen = () => {
     setOpen(true);
@@ -37,11 +37,6 @@ function FightModal(props) {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleReset = () => {
-    handleSelection('', 'primary');
-    handleSelection('', 'secondary');
   };
 
   const redirect = () => {
@@ -76,9 +71,23 @@ function FightModal(props) {
         <Fade in={open}>
           <div style={modalStyle} className={classes.paper}>
             <h2>You're gonna start a fight</h2>
-            <p>{primaryMovie && primaryMovie.Title}</p>
-            <p>VS</p>
-            <p>{secondaryMovie && secondaryMovie.Title}</p>
+            <div
+              style={{
+                display: 'flex',
+                gap: ' 1rem',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '1rem',
+              }}
+            >
+              <Typography variant="body2">
+                {primaryMovie && primaryMovie.Title}
+              </Typography>
+              <Typography>🔪VS🔪</Typography>
+              <Typography variant="body2">
+                {secondaryMovie && secondaryMovie.Title}
+              </Typography>
+            </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Button
                 style={{ backgroundColor: accent }}

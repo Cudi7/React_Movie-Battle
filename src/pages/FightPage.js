@@ -17,10 +17,17 @@ import {
 import ModalFight from '../components/CardFight/ModalFight/ModalFight';
 
 import { Link as RouterLink } from 'react-router-dom';
+import Hero from '../components/Hero/Hero';
+import { ExpandLessOutlined, TrendingUpOutlined } from '@material-ui/icons';
+import Loading from '../components/Loading/Loading';
 
 function FightPage(props) {
-  const { handleSelection, setFightValues, fightValues } = props;
-  const [movieComparative, setMovieComparative] = useState({});
+  // const { handleSelection, setFightValues, fightValues, handleReset } = props;
+  const { fightValues, handleReset, loading, setLoading } = props;
+  const [movieComparative, setMovieComparative] = useState('');
+
+  const [movieItems, setMovieItems] = useState({});
+
   const [primaryWinCount, setPrimaryWinCount] = useState(0);
   const [secondaryWinCount, setSecondaryWinCount] = useState(0);
 
@@ -30,12 +37,14 @@ function FightPage(props) {
         fightValues.primary[2].value,
         'searchById'
       );
+
       const second = await fetchMovie(
         fightValues.secondary[2].value,
         'searchById'
       );
 
-      setMovieComparative({
+      setMovieItems({
+        ...movieItems,
         primary: formatedDataFight(first),
         secondary: formatedDataFight(second),
       });
@@ -45,78 +54,117 @@ function FightPage(props) {
   }, []);
 
   useEffect(() => {
-    const primaryWinsAward =
-      movieComparative.primary && compareAwards(movieComparative);
-    const primaryWinsMetascore =
-      movieComparative.primary && compareMetascore(movieComparative);
-    const primaryWinsRating =
-      movieComparative.primary && compareRating(movieComparative);
-    const primaryWinsVotes =
-      movieComparative.primary && compareVotes(movieComparative);
-    const primaryWinsBoxOffice =
-      movieComparative.primary && compareBoxOffice(movieComparative);
+    if (movieItems.primary && movieItems.secondary) {
+      const primaryWinsAward = compareAwards(movieItems);
+      let primaryWins = false;
+      let secondaryWins = false;
+      if (primaryWinsAward) {
+        setPrimaryWinCount((currCount) => currCount + 1);
+        primaryWins = true;
+      } else {
+        setSecondaryWinCount((currCount) => currCount + 1);
+        secondaryWins = true;
+      }
+      const winner = primaryWins
+        ? (movieItems.primary[1].winner = true)
+        : (movieItems.secondary[1].winner = true);
 
-    if (primaryWinsAward) {
-      setPrimaryWinCount((currCount) => currCount + 1);
-      const test = (movieComparative.primary[1].winner = true);
-
-      setMovieComparative({ ...movieComparative, test });
-      //intentar arreglar este estado para hacerlo en una linea
-    } else if (!primaryWinsAward) {
-      setSecondaryWinCount((currCount) => currCount + 1);
+      setMovieComparative({ ...movieItems, winner });
     }
+  }, [movieItems.primary]);
 
-    if (primaryWinsMetascore) {
-      setPrimaryWinCount((currCount) => currCount + 1);
-      const test = (movieComparative.primary[3].winner = true);
+  useEffect(() => {
+    if (movieItems.primary && movieItems.secondary) {
+      const primaryWinsAward = compareMetascore(movieItems);
+      let primaryWins = false;
+      let secondaryWins = false;
+      if (primaryWinsAward) {
+        setPrimaryWinCount((currCount) => currCount + 1);
+        primaryWins = true;
+      } else {
+        setSecondaryWinCount((currCount) => currCount + 1);
+        secondaryWins = true;
+      }
+      const winner = primaryWins
+        ? (movieItems.primary[3].winner = true)
+        : (movieItems.secondary[3].winner = true);
 
-      setMovieComparative({ ...movieComparative, test });
-      //intentar arreglar este estado para hacerlo en una linea
-    } else if (!primaryWinsMetascore) {
-      setSecondaryWinCount((currCount) => currCount + 1);
+      setMovieComparative({ ...movieItems, winner });
     }
+  }, [movieItems.primary]);
 
-    if (primaryWinsRating) {
-      setPrimaryWinCount((currCount) => currCount + 1);
-      const test = (movieComparative.primary[4].winner = true);
+  useEffect(() => {
+    if (movieItems.primary && movieItems.secondary) {
+      const primaryWinsAward = compareRating(movieItems);
+      let primaryWins = false;
+      let secondaryWins = false;
+      if (primaryWinsAward) {
+        setPrimaryWinCount((currCount) => currCount + 1);
+        primaryWins = true;
+      } else {
+        setSecondaryWinCount((currCount) => currCount + 1);
+        secondaryWins = true;
+      }
+      const winner = primaryWins
+        ? (movieItems.primary[4].winner = true)
+        : (movieItems.secondary[4].winner = true);
 
-      setMovieComparative({ ...movieComparative, test });
-      //intentar arreglar este estado para hacerlo en una linea
-    } else if (!primaryWinsRating) {
-      setSecondaryWinCount((currCount) => currCount + 1);
+      setMovieComparative({ ...movieItems, winner });
     }
+  }, [movieItems.primary]);
 
-    if (primaryWinsVotes) {
-      setPrimaryWinCount((currCount) => currCount + 1);
-      const test = (movieComparative.primary[5].winner = true);
+  useEffect(() => {
+    if (movieItems.primary && movieItems.secondary) {
+      const primaryWinsAward = compareVotes(movieItems);
+      let primaryWins = false;
+      let secondaryWins = false;
+      if (primaryWinsAward) {
+        setPrimaryWinCount((currCount) => currCount + 1);
+        primaryWins = true;
+      } else {
+        setSecondaryWinCount((currCount) => currCount + 1);
+        secondaryWins = true;
+      }
+      const winner = primaryWins
+        ? (movieItems.primary[5].winner = true)
+        : (movieItems.secondary[5].winner = true);
 
-      setMovieComparative({ ...movieComparative, test });
-      //intentar arreglar este estado para hacerlo en una linea
-    } else if (!primaryWinsVotes) {
-      setSecondaryWinCount((currCount) => currCount + 1);
+      setMovieComparative({ ...movieItems, winner });
     }
+  }, [movieItems.primary]);
 
-    if (primaryWinsBoxOffice) {
-      setPrimaryWinCount((currCount) => currCount + 1);
-      const test = (movieComparative.primary[6].winner = true);
+  useEffect(() => {
+    if (movieItems.primary && movieItems.secondary) {
+      const primaryWinsAward = compareBoxOffice(movieItems);
+      let primaryWins = false;
+      let secondaryWins = false;
+      if (primaryWinsAward) {
+        setPrimaryWinCount((currCount) => currCount + 1);
+        primaryWins = true;
+      } else {
+        setSecondaryWinCount((currCount) => currCount + 1);
+        secondaryWins = true;
+      }
+      const winner = primaryWins
+        ? (movieItems.primary[7].winner = true)
+        : (movieItems.secondary[7].winner = true);
 
-      setMovieComparative({ ...movieComparative, test });
-      //intentar arreglar este estado para hacerlo en una linea
-    } else if (!primaryWinsBoxOffice) {
-      setSecondaryWinCount((currCount) => currCount + 1);
+      setMovieComparative({ ...movieItems, winner });
     }
-  }, [movieComparative.primary]);
+  }, [movieItems.primary]);
 
-  return movieComparative.primary ? (
+  return movieComparative?.primary ? (
     <>
       <CssBaseline />
 
-      <Container maxWidth="md">
+      <Container maxWidth="md" style={{ marginBottom: '5rem' }}>
+        <Hero fight />
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
-            margin: '3rem auto 2rem',
+            justifyContent: 'center',
+            margin: '0 auto 2rem',
+            gap: '3rem',
           }}
         >
           <ModalFight
@@ -126,7 +174,12 @@ function FightPage(props) {
                 : movieComparative.secondary
             }
           />
-          <Button variant="contained" component={RouterLink} to="/">
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to="/"
+            onClick={handleReset}
+          >
             Go Back
           </Button>
         </div>
@@ -146,7 +199,9 @@ function FightPage(props) {
         </Grid>
       </Container>
     </>
-  ) : null;
+  ) : (
+    <Loading />
+  );
 }
 
 export default FightPage;
