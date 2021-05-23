@@ -3,8 +3,8 @@ const key = `17308409`;
 
 const fetchMovie = async (searchTerm, searchById) => {
   const res = searchById
-    ? await fetch(`http://www.omdbapi.com/?apikey=${key}&i=${searchTerm}`)
-    : await fetch(`http://www.omdbapi.com/?apikey=${key}&s=${searchTerm}`);
+    ? await fetch(`https://www.omdbapi.com/?apikey=${key}&i=${searchTerm}`)
+    : await fetch(`https://www.omdbapi.com/?apikey=${key}&s=${searchTerm}`);
 
   const data = await res.json();
 
@@ -30,7 +30,7 @@ const fetchInitialVal = async () => {
     for (let i = 0; i < MAX_NUM; i++) {
       try {
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${key}&s=${titles[0]}`
+          `https://www.omdbapi.com/?apikey=${key}&s=${titles[0]}`
         );
         const data = await res.json();
 

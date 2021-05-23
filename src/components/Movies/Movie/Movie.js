@@ -22,6 +22,7 @@ function Movie(props) {
   const handleClick = (id) => {
     history.push(`/details/${id}`);
   };
+  console.log('test');
 
   const selected = id.find((el) => el === movie.imdbID);
 
