@@ -4,7 +4,6 @@ import CardFight from '../components/CardFight/CardFight';
 import { formatedDataFight } from '../utils/formatedData';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { Button, Grid } from '@material-ui/core';
 import {
@@ -18,12 +17,10 @@ import ModalFight from '../components/CardFight/ModalFight/ModalFight';
 
 import { Link as RouterLink } from 'react-router-dom';
 import Hero from '../components/Hero/Hero';
-import { ExpandLessOutlined, TrendingUpOutlined } from '@material-ui/icons';
 import Loading from '../components/Loading/Loading';
 
 function FightPage(props) {
-  // const { handleSelection, setFightValues, fightValues, handleReset } = props;
-  const { fightValues, handleReset, loading, setLoading } = props;
+  const { fightValues, handleReset } = props;
   const [movieComparative, setMovieComparative] = useState('');
 
   const [movieItems, setMovieItems] = useState({});
@@ -55,101 +52,99 @@ function FightPage(props) {
 
   useEffect(() => {
     if (movieItems.primary && movieItems.secondary) {
+      //award comparision
       const primaryWinsAward = compareAwards(movieItems);
       let primaryWins = false;
-      let secondaryWins = false;
+
       if (primaryWinsAward) {
         setPrimaryWinCount((currCount) => currCount + 1);
         primaryWins = true;
       } else {
         setSecondaryWinCount((currCount) => currCount + 1);
-        secondaryWins = true;
       }
-      const winner = primaryWins
+      const awardWinner = primaryWins
         ? (movieItems.primary[1].winner = true)
         : (movieItems.secondary[1].winner = true);
 
-      setMovieComparative({ ...movieItems, winner });
-    }
-  }, [movieItems.primary]);
+      //metaScore comparision
+      const primaryWinsMeta = compareMetascore(movieItems);
+      primaryWins = false;
 
-  useEffect(() => {
-    if (movieItems.primary && movieItems.secondary) {
-      const primaryWinsAward = compareMetascore(movieItems);
-      let primaryWins = false;
-      let secondaryWins = false;
-      if (primaryWinsAward) {
+      if (primaryWinsMeta) {
         setPrimaryWinCount((currCount) => currCount + 1);
         primaryWins = true;
       } else {
         setSecondaryWinCount((currCount) => currCount + 1);
-        secondaryWins = true;
       }
-      const winner = primaryWins
+      const metaWinner = primaryWins
         ? (movieItems.primary[3].winner = true)
         : (movieItems.secondary[3].winner = true);
 
-      setMovieComparative({ ...movieItems, winner });
-    }
-  }, [movieItems.primary]);
+      //Rating comparision
 
-  useEffect(() => {
-    if (movieItems.primary && movieItems.secondary) {
-      const primaryWinsAward = compareRating(movieItems);
-      let primaryWins = false;
-      let secondaryWins = false;
-      if (primaryWinsAward) {
+      const primaryWinsRating = compareRating(movieItems);
+      primaryWins = false;
+
+      if (primaryWinsRating) {
         setPrimaryWinCount((currCount) => currCount + 1);
         primaryWins = true;
       } else {
         setSecondaryWinCount((currCount) => currCount + 1);
-        secondaryWins = true;
       }
-      const winner = primaryWins
+      const ratingWinner = primaryWins
         ? (movieItems.primary[4].winner = true)
         : (movieItems.secondary[4].winner = true);
 
-      setMovieComparative({ ...movieItems, winner });
-    }
-  }, [movieItems.primary]);
+      // Votes comparision
 
-  useEffect(() => {
-    if (movieItems.primary && movieItems.secondary) {
-      const primaryWinsAward = compareVotes(movieItems);
-      let primaryWins = false;
-      let secondaryWins = false;
-      if (primaryWinsAward) {
+      const primaryWinsVotes = compareVotes(movieItems);
+      primaryWins = false;
+
+      if (primaryWinsVotes) {
         setPrimaryWinCount((currCount) => currCount + 1);
         primaryWins = true;
       } else {
         setSecondaryWinCount((currCount) => currCount + 1);
-        secondaryWins = true;
       }
-      const winner = primaryWins
+      const votesWinner = primaryWins
         ? (movieItems.primary[5].winner = true)
         : (movieItems.secondary[5].winner = true);
 
-      setMovieComparative({ ...movieItems, winner });
-    }
-  }, [movieItems.primary]);
+      //Box office comparision
 
-  useEffect(() => {
-    if (movieItems.primary && movieItems.secondary) {
-      const primaryWinsAward = compareBoxOffice(movieItems);
-      let primaryWins = false;
-      let secondaryWins = false;
-      if (primaryWinsAward) {
+      const primaryWinsBox = compareBoxOffice(movieItems);
+      primaryWins = false;
+
+      if (primaryWinsBox) {
         setPrimaryWinCount((currCount) => currCount + 1);
         primaryWins = true;
       } else {
         setSecondaryWinCount((currCount) => currCount + 1);
-        secondaryWins = true;
       }
-      const winner = primaryWins
-        ? (movieItems.primary[7].winner = true)
-        : (movieItems.secondary[7].winner = true);
+      //some movies/series doesnt have boxoffice value, we need to check it first
 
-      setMovieComparative({ ...movieItems, winner });
+      if (primaryWinsBox === undefined) {
+        setMovieComparative({
+          ...movieItems,
+          awardWinner,
+          metaWinner,
+          ratingWinner,
+          votesWinner,
+        });
+      } else {
+        const boxOfficeWinner = primaryWins
+          ? (movieItems.primary[7].winner = true)
+          : (movieItems.secondary[7].winner = true);
+
+        setMovieComparative({
+          ...movieItems,
+          awardWinner,
+          metaWinner,
+          ratingWinner,
+          votesWinner,
+          boxOfficeWinner,
+        });
+      }
     }
   }, [movieItems.primary]);
 
@@ -175,12 +170,12 @@ function FightPage(props) {
             }
           />
           <Button
-            variant="contained"
+            variant="outlined"
             component={RouterLink}
             to="/"
             onClick={handleReset}
           >
-            Go Back
+            Reset
           </Button>
         </div>
         <Grid

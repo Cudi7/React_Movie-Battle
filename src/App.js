@@ -1,5 +1,6 @@
 import IndexMovieApp from './pages/IndexMovieApp';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { MovieProvider } from './contexts/movie.context';
 
 function App() {
   const darkTheme = createMuiTheme({
@@ -10,7 +11,9 @@ function App() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <IndexMovieApp />
+      <MovieProvider>
+        <IndexMovieApp />
+      </MovieProvider>
     </ThemeProvider>
   );
 }

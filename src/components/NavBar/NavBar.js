@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -30,13 +29,7 @@ function NavBar(props) {
   const classes = useNavBarStyles();
   const [resetValue, setResetValue] = useState(false);
 
-  const {
-    handleSearch,
-    searchMovieList,
-    setSearchMovieList,
-    setCurrentMovieList,
-    currentMovieList,
-  } = props;
+  const { handleSearch, searchMovieList, setSearchMovieList } = props;
 
   useEffect(() => {
     setTimeout(() => setResetValue(false), 500);
@@ -89,8 +82,6 @@ function NavBar(props) {
           <SearchItems
             searchMovieList={searchMovieList}
             setSearchMovieList={setSearchMovieList}
-            setCurrentMovieList={setCurrentMovieList}
-            currentMovieList={currentMovieList}
             setResetValue={setResetValue}
           />
         )}

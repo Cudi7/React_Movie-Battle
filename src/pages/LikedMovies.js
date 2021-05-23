@@ -1,10 +1,8 @@
-import React from 'react';
-import { useHistory } from 'react-router';
-
+import React, { useContext, useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
-import useMovieStyles from '../components/Movies/Movie/MovieStyles';
 import LikedMoviesList from '../components/LikedMovies/LikedMoviesList';
-import { List, makeStyles, Paper } from '@material-ui/core';
+import { List, makeStyles } from '@material-ui/core';
+import { MovieContext } from '../contexts/movie.context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,9 +14,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function LikedMovies(props) {
-  const { likedMovies, currentMovieList, setCurrentMovieList } = props;
+  const { currentMovieList } = useContext(MovieContext);
+  const [likedElement, setLikedElement] = useState(false);
+
+  useEffect(() => {
+    if (currentMovieList) {
+      setLikedElement(currentMovieList.find((el) => el.liked === true));
+    }
+  }, [currentMovieList]);
+
   const classes = useStyles();
-  let history = useHistory();
 
   return (
     <>
@@ -31,21 +36,22 @@ function LikedMovies(props) {
         Your favorite Movies!
       </Typography>
 
-      {currentMovieList ? (
+      {likedElement ? (
         currentMovieList.map(
           (movie, index) =>
             movie.liked && (
               <List className={classes.root}>
-                <LikedMoviesList
-                  movie={movie}
-                  setCurrentMovieList={setCurrentMovieList}
-                  currentMovieList={currentMovieList}
-                />
+                <LikedMoviesList movie={movie} />
               </List>
             )
         )
       ) : (
-        <h1>No liked movies yet</h1>
+        <h1
+          className={classes.root}
+          style={{ margin: '7rem auto 3rem', textAlign: 'center' }}
+        >
+          This list is empty, click 'Learn More' on any movie to add it here
+        </h1>
       )}
     </>
   );

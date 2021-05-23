@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Hero from '../components/Hero/Hero';
 import NavBar from '../components/NavBar/NavBar';
 import NavBarSecondary from '../components/NavBar/NavBarSecondary';
@@ -10,22 +10,26 @@ import MovieDetails from '../components/MovieDetails/MovieDetails';
 import FightPage from './FightPage';
 import LikedMovies from './LikedMovies';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { MovieContext } from '../contexts/movie.context';
 
 function MovieApp() {
   const [searchTerm, setSearchTerm] = useState('');
   const [timeoutId, setTimeoutId] = useState('');
-  const [currentMovieList, setCurrentMovieList] = useState('');
-  const [primaryMovie, setPrimaryMovie] = useState('');
-  const [secondaryMovie, setSecondaryMovie] = useState('');
+
   const [fightValues, setFightValues] = useState({});
   const [figthersId, setFigthersId] = useState([]);
   const [likedMovies, setLikedMovies] = useState([]);
-  const [redirect, setRedirect] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
   const [searchMovieList, setSearchMovieList] = useState([]);
-  const [val, handleVal] = useLocalStorage('movies');
+
+  const {
+    currentMovieList,
+    setCurrentMovieList,
+    setPrimaryMovie,
+    setSecondaryMovie,
+  } = useContext(MovieContext);
 
   useEffect(() => {
     const fetchMovieHandler = async () => {
@@ -36,10 +40,6 @@ function MovieApp() {
 
     searchTerm && fetchMovieHandler();
   }, [searchTerm]);
-
-  useEffect(() => {
-    handleVal(currentMovieList);
-  }, [currentMovieList]);
 
   function handleSearch(e) {
     if (timeoutId) clearTimeout(timeoutId);
@@ -52,14 +52,14 @@ function MovieApp() {
   }
 
   const handleLikes = (id) => {
-    const test = currentMovieList.map((el) => {
+    const filteredList = currentMovieList.map((el) => {
       if (el.imdbID === id) {
         el.liked = !el.liked;
       }
       return el;
     });
 
-    setCurrentMovieList(test);
+    setCurrentMovieList(filteredList);
   };
 
   const handleSelection = (data, type, id) => {
@@ -96,18 +96,12 @@ function MovieApp() {
             handleSearch={handleSearch}
             searchMovieList={searchMovieList}
             setSearchMovieList={setSearchMovieList}
-            setCurrentMovieList={setCurrentMovieList}
-            currentMovieList={currentMovieList}
           />
           <Grid container justify="center" style={{ marginTop: '1rem' }}>
             <Grid item xs={11} md={10} lg={9}>
               <Hero />
               <Movies
-                currentMovieList={currentMovieList}
-                setCurrentMovieList={setCurrentMovieList}
                 handleSelection={handleSelection}
-                primaryMovie={primaryMovie}
-                secondaryMovie={secondaryMovie}
                 id={figthersId}
                 handleReset={handleReset}
               />
@@ -119,9 +113,6 @@ function MovieApp() {
           <MovieDetails
             idArray={figthersId}
             handleSelection={handleSelection}
-            primaryMovie={primaryMovie}
-            secondaryMovie={secondaryMovie}
-            currentMovieList={currentMovieList}
             handleReset={handleReset}
             setLikedMovies={setLikedMovies}
             handleLikes={handleLikes}
@@ -130,9 +121,7 @@ function MovieApp() {
         <Route exact path="/fight">
           <NavBarSecondary />
           <FightPage
-            // setFightValues={setFightValues}
             fightValues={fightValues}
-            // handleSelection={handleSelection}
             handleReset={handleReset}
             setLoading={setLoading}
             loading={loading}
@@ -140,10 +129,7 @@ function MovieApp() {
         </Route>
         <Route exact path="/liked-movies">
           <NavBarSecondary />
-          <LikedMovies
-            currentMovieList={currentMovieList}
-            setCurrentMovieList={setCurrentMovieList}
-          />
+          <LikedMovies />
         </Route>
       </Switch>
     </BrowserRouter>

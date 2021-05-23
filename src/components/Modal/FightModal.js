@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import Modal from '@material-ui/core/Modal';
 import useModalStyles from './FightModalStyles';
@@ -7,12 +7,14 @@ import purple from '@material-ui/core/colors/purple';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Link as RouterLink } from 'react-router-dom';
+import { MovieContext } from '../../contexts/movie.context';
 
 function FightModal(props) {
   const [open, setOpen] = useState(false);
 
   const classes = useModalStyles();
-  const { primaryMovie, secondaryMovie, handleSelection, handleReset } = props;
+  const { handleReset } = props;
+  const { primaryMovie, secondaryMovie } = useContext(MovieContext);
 
   const handleOpen = () => {
     setOpen(true);

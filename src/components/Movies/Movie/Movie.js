@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -11,17 +11,12 @@ import useMovieStyles from './MovieStyles';
 import { useHistory } from 'react-router';
 import FightModal from '../../Modal/FightModal';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import { MovieContext } from '../../../contexts/movie.context';
 
 function Movie(props) {
   const classes = useMovieStyles();
-  const {
-    movie,
-    handleSelection,
-    primaryMovie,
-    secondaryMovie,
-    id,
-    handleReset,
-  } = props;
+  const { movie, handleSelection, id, handleReset } = props;
+  const { primaryMovie, secondaryMovie } = useContext(MovieContext);
   let history = useHistory();
 
   const handleClick = (id) => {
@@ -81,8 +76,6 @@ function Movie(props) {
         ) : (
           <>
             <FightModal
-              primaryMovie={primaryMovie}
-              secondaryMovie={secondaryMovie}
               handleSelection={handleSelection}
               handleReset={handleReset}
             />

@@ -8,7 +8,6 @@ import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MovieIcon from '@material-ui/icons/Movie';
 import {
@@ -46,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CardFight(props) {
-  const { movieComparative, wins } = props;
+  const { movieComparative } = props;
 
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);

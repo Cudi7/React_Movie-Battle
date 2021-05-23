@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Avatar, ClickAwayListener, ListItemAvatar } from '@material-ui/core';
 import useLocalStorage from '../../../hooks/useLocalStorage';
+import { MovieContext } from '../../../contexts/movie.context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,24 +27,16 @@ const useStyles = makeStyles((theme) => ({
 
 function SearchItems(props) {
   const classes = useStyles();
-  const {
-    searchMovieList,
-    setSearchMovieList,
-    setCurrentMovieList,
-    currentMovieList,
-    setResetValue,
-  } = props;
+  const { searchMovieList, setSearchMovieList, setResetValue } = props;
+
+  const { currentMovieList, setCurrentMovieList } = useContext(MovieContext);
 
   const [open, setOpen] = useState(true);
-  const [val, handleVal] = useLocalStorage('movies');
+  const [handleVal] = useLocalStorage('movies');
 
   useEffect(() => {
     setOpen(true);
   }, [searchMovieList]);
-
-  useEffect(() => {
-    handleVal(currentMovieList);
-  }, [currentMovieList]);
 
   const handleClickAwayEvent = () => {
     setOpen(false);

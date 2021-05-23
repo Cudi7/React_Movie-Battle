@@ -32,9 +32,22 @@ const compareVotes = (data) =>
   Number(data.primary[5].value.replaceAll(',', '')) >
   Number(data.secondary[5].value.replaceAll(',', ''));
 
-const compareBoxOffice = (data) =>
-  Number(data.primary[6].value.slice(1, -1).replaceAll(',', '')) >
-  Number(data.secondary[6].value.slice(1, -1).replaceAll(',', ''));
+const compareBoxOffice = (data) => {
+  const boxOfficeOne = data.primary[7]
+    ? Number(data.primary[7].value.slice(1, -1).replaceAll(',', ''))
+    : 0;
+  const boxOfficeTwo = data.secondary[7]
+    ? Number(data.secondary[7].value.slice(1, -1).replaceAll(',', ''))
+    : 0;
+
+  console.log(boxOfficeOne);
+  console.log(boxOfficeTwo);
+  console.log(boxOfficeOne > boxOfficeTwo);
+
+  if (boxOfficeOne === 0 && boxOfficeTwo === 0) return undefined;
+
+  return boxOfficeOne > boxOfficeTwo;
+};
 
 export {
   compareAwards,
