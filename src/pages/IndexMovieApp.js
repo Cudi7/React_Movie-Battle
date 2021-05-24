@@ -104,6 +104,7 @@ function MovieApp() {
                 handleSelection={handleSelection}
                 id={figthersId}
                 handleReset={handleReset}
+                handleLikes={handleLikes}
               />
             </Grid>
           </Grid>

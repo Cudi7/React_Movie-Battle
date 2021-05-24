@@ -6,7 +6,7 @@ import { MovieContext } from '../../contexts/movie.context';
 import Movie from './Movie/Movie';
 
 function Movies(props) {
-  const { handleSelection, id, handleReset } = props;
+  const { handleSelection, id, handleReset, handleLikes } = props;
 
   const { currentMovieList } = useContext(MovieContext);
 
@@ -29,6 +29,7 @@ function Movies(props) {
             handleSelection={handleSelection}
             id={id}
             handleReset={handleReset}
+            handleLikes={handleLikes}
           />
         ))}
     </Paper>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import LikedMoviesList from '../components/LikedMovies/LikedMoviesList';
-import { List, makeStyles } from '@material-ui/core';
+import { List, makeStyles, Paper } from '@material-ui/core';
 import { MovieContext } from '../contexts/movie.context';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,12 +26,12 @@ function LikedMovies(props) {
   const classes = useStyles();
 
   return (
-    <>
+    <Paper style={{ minHeight: '100vh' }}>
       <Typography
         gutterBottom
         variant="h4"
         component="h2"
-        style={{ margin: '7rem auto 3rem', textAlign: 'center' }}
+        style={{ paddingTop: '7rem', textAlign: 'center' }}
       >
         Your favorite Movies!
       </Typography>
@@ -53,7 +53,7 @@ function LikedMovies(props) {
           This list is empty, click 'Learn More' on any movie to add it here
         </h1>
       )}
-    </>
+    </Paper>
   );
 }
 

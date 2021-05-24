@@ -15,12 +15,13 @@
 - ✅add likedMoviesPage delete button functionality
 - ✅ add useContext,
 - ✅ fix boxOffice comparision
-- ❓fix weird bug with data desapearing and setting localStorage to "" (UNABLE TO FIND BUG)
 - ✅ fix undefined values
-- add like and remove icons to screen page (fix grid to adapt it to viewport)
+- ✅ add like and remove icons to screen page (fix grid to adapt it to viewport)
+
+- ✅ secondary navbar make it disapear on scroll
+- ❓fix weird bug with data desapearing and setting localStorage to "" (UNABLE TO FIND BUG)
 - fix unexisting search data and display error message
 - fix format inside details when fighting
-- secondary navbar make it disapear on scroll
 
 - deploy and announce working on refactor to useContext fist and then redux
 - Custom Hooks (input)
