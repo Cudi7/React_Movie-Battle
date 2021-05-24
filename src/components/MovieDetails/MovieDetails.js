@@ -30,6 +30,7 @@ import { formatedDataDetails } from '../../utils/formatedData';
 import FightModal from '../Modal/FightModal';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import { MovieContext } from '../../contexts/movie.context';
+import Loading from '../Loading/Loading';
 
 function MovieDetails(props) {
   const [currentDetails, setCurrentDetails] = useState('');
@@ -37,7 +38,10 @@ function MovieDetails(props) {
   const [detailsObject, setDetailsObject] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [height, setHeight] = useState('400px');
+  const [loadingDetails, setLoadingDetails] = useState(true);
   const classes = useMovieDetailsStyles();
+
+  console.log('inside details');
 
   const { idArray, handleSelection, handleReset, handleLikes } = props;
 
@@ -61,6 +65,7 @@ function MovieDetails(props) {
         setCurrentDetails(data);
         setDetailsObject(detailsObject);
         setMovie(currentMovieList.find((el) => el.imdbID === id));
+        setLoadingDetails(false);
       }
     };
 
@@ -73,113 +78,122 @@ function MovieDetails(props) {
     <>
       <CssBaseline />
       <Container maxWidth="sm">
-        <Card className={classes.root}>
-          <CardHeader
-            avatar={
-              <Avatar aria-label="Rated" className={classes.avatar}>
-                {currentDetails.Rated}
-              </Avatar>
-            }
-            title={currentDetails.Title}
-            subheader={`Released: ${currentDetails.Released}`}
-          />
-          <CardMedia
-            component="img"
-            className={classes.media}
-            image={currentDetails.Poster}
-            title={currentDetails.Title}
-            alt={currentDetails.Title}
-            height={height}
-            style={{ maxWidth: '300px' }}
-          />
-          <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {currentDetails.Plot}
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton
-              aria-label="add to favorites"
-              onClick={() => handleLikes(currentDetails.imdbID)}
-            >
-              {movie?.liked ? (
-                <FavoriteIcon color="secondary" />
-              ) : (
-                <FavoriteBorderIcon
-                  color={movie?.liked ? 'secondary' : 'inherit'}
-                />
-              )}
-            </IconButton>
-            {!primaryMovie || !secondaryMovie ? (
-              <Button
-                disabled={selected ? true : false}
-                variant="contained"
-                color="secondary"
-                style={{ marginLeft: 'auto' }}
-                onClick={
-                  primaryMovie
-                    ? () =>
-                        handleSelection(
-                          movie,
-                          'secondary',
-                          currentDetails.imdbID
-                        )
-                    : () =>
-                        handleSelection(movie, 'primary', currentDetails.imdbID)
-                }
-              >
-                {idArray.find((el) => el === currentDetails.imdbID)
-                  ? primaryMovie
-                    ? 'First Fighter'
-                    : 'Second Fighter'
-                  : 'Select Fighter'}
-              </Button>
-            ) : (
-              <>
-                <FightModal
-                  handleSelection={handleSelection}
-                  handleReset={handleReset}
-                />
-                <RotateLeftIcon onClick={handleReset} cursor="pointer" />
-              </>
-            )}
-            <Button
-              variant="outlined"
-              style={{ marginLeft: '1.5vw' }}
-              component={RouterLink}
-              to="/"
-            >
-              Go Back
-            </Button>
-            <IconButton
-              className={clsx(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
+        {loadingDetails ? (
+          <Loading />
+        ) : (
+          <Card className={classes.root}>
+            <CardHeader
+              avatar={
+                <Avatar aria-label="Rated" className={classes.avatar}>
+                  {currentDetails.Rated}
+                </Avatar>
+              }
+              title={currentDetails.Title}
+              subheader={`Released: ${currentDetails.Released}`}
+            />
+            <CardMedia
+              component="img"
+              className={classes.media}
+              image={currentDetails.Poster}
+              title={currentDetails.Title}
+              alt={currentDetails.Title}
+              height={height}
+              style={{ maxWidth: '300px' }}
+            />
             <CardContent>
-              <List>
-                {detailsObject &&
-                  detailsObject.map((el, i) => (
-                    <ListItem key={i}>
-                      <ListItemAvatar>
-                        <Avatar>
-                          <MovieIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary={el.key} secondary={el.value} />
-                    </ListItem>
-                  ))}
-              </List>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {currentDetails.Plot}
+              </Typography>
             </CardContent>
-          </Collapse>
-        </Card>
+            <CardActions disableSpacing>
+              <IconButton
+                aria-label="add to favorites"
+                onClick={() => handleLikes(currentDetails.imdbID)}
+                style={{ marginRight: 'auto' }}
+              >
+                {movie?.liked ? (
+                  <FavoriteIcon color="secondary" />
+                ) : (
+                  <FavoriteBorderIcon
+                    color={movie?.liked ? 'secondary' : 'inherit'}
+                  />
+                )}
+              </IconButton>
+              {!primaryMovie || !secondaryMovie ? (
+                <Button
+                  disabled={selected ? true : false}
+                  variant="contained"
+                  color="secondary"
+                  style={{ marginLeft: 'auto' }}
+                  onClick={
+                    primaryMovie
+                      ? () =>
+                          handleSelection(
+                            movie,
+                            'secondary',
+                            currentDetails.imdbID
+                          )
+                      : () =>
+                          handleSelection(
+                            movie,
+                            'primary',
+                            currentDetails.imdbID
+                          )
+                  }
+                >
+                  {idArray.find((el) => el === currentDetails.imdbID)
+                    ? primaryMovie
+                      ? 'First Fighter'
+                      : 'Second Fighter'
+                    : 'Select Fighter'}
+                </Button>
+              ) : (
+                <>
+                  <FightModal
+                    handleSelection={handleSelection}
+                    handleReset={handleReset}
+                  />
+                  <RotateLeftIcon onClick={handleReset} cursor="pointer" />
+                </>
+              )}
+              <Button
+                variant="outlined"
+                style={{ marginLeft: '1.5vw' }}
+                component={RouterLink}
+                to="/"
+              >
+                Go Back
+              </Button>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <List>
+                  {detailsObject &&
+                    detailsObject.map((el, i) => (
+                      <ListItem key={i}>
+                        <ListItemAvatar>
+                          <Avatar>
+                            <MovieIcon />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={el.key} secondary={el.value} />
+                      </ListItem>
+                    ))}
+                </List>
+              </CardContent>
+            </Collapse>
+          </Card>
+        )}
       </Container>
     </>
   );

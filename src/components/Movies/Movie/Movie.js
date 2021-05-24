@@ -43,7 +43,6 @@ function Movie(props) {
   const handleClick = (id) => {
     history.push(`/details/${id}`);
   };
-  console.log('test');
 
   const selected = id.find((el) => el === movie.imdbID);
 
@@ -64,6 +63,11 @@ function Movie(props) {
   const handleLikeState = (id) => {
     handleLikes(id);
     setSnackBarState(true);
+  };
+
+  const handleDeleteAction = (id) => {
+    handleDeleteClick(id);
+    handleReset();
   };
 
   return (
@@ -148,11 +152,11 @@ function Movie(props) {
             <MenuItem onClick={handleClose}>
               <IconButton
                 aria-label="delete"
-                onClick={() => handleDeleteClick(movie.imdbID)}
+                onClick={() => handleDeleteAction(movie.imdbID)}
               >
                 <DeleteIcon />
               </IconButton>
-              <Typography onClick={() => handleDeleteClick(movie.imdbID)}>
+              <Typography onClick={() => handleDeleteAction(movie.imdbID)}>
                 Delete
               </Typography>
             </MenuItem>

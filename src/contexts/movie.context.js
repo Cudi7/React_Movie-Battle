@@ -1,5 +1,6 @@
 import React, { useState, createContext, useEffect } from 'react';
 import { fetchInitialVal } from '../api/api';
+import useInput from '../hooks/useInput';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 export const MovieContext = createContext();
@@ -10,6 +11,7 @@ export function MovieProvider(props) {
   const [initialVal, setInitialVal] = useState([]);
   const [primaryMovie, setPrimaryMovie] = useState('');
   const [secondaryMovie, setSecondaryMovie] = useState('');
+  const [input, handleChange, reset] = useInput();
 
   useEffect(() => {
     const fetchInitalValHandler = async () => {
@@ -37,6 +39,9 @@ export function MovieProvider(props) {
         primaryMovie,
         setSecondaryMovie,
         secondaryMovie,
+        input,
+        handleChange,
+        reset,
       }}
     >
       {props.children}

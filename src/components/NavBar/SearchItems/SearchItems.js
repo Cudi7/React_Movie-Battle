@@ -29,10 +29,10 @@ function SearchItems(props) {
   const classes = useStyles();
   const { searchMovieList, setSearchMovieList, setResetValue } = props;
 
-  const { currentMovieList, setCurrentMovieList } = useContext(MovieContext);
+  const { currentMovieList, setCurrentMovieList, reset } =
+    useContext(MovieContext);
 
   const [open, setOpen] = useState(true);
-  const [handleVal] = useLocalStorage('movies');
 
   useEffect(() => {
     setOpen(true);
@@ -45,7 +45,7 @@ function SearchItems(props) {
   };
 
   const handleClick = (newElement) => {
-    setResetValue(true);
+    reset(); //input from searchbar
     setOpen((prev) => !prev);
 
     const newCurrentMovieList = currentMovieList;

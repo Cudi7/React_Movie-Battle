@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +12,8 @@ import useNavBarStyles from './NavBarStyles';
 
 import { Link as RouterLink } from 'react-router-dom';
 import SearchItems from './SearchItems/SearchItems';
+import useInput from '../../hooks/useInput';
+import { MovieContext } from '../../contexts/movie.context';
 
 function HideOnScroll(props) {
   const { children } = props;
@@ -29,11 +31,18 @@ function NavBar(props) {
   const classes = useNavBarStyles();
   const [resetValue, setResetValue] = useState(false);
 
+  const { input, handleChange } = useContext(MovieContext);
+
   const { handleSearch, searchMovieList, setSearchMovieList } = props;
 
   useEffect(() => {
     setTimeout(() => setResetValue(false), 500);
   }, [resetValue]);
+
+  const handleChangeTerm = (e) => {
+    handleChange(e); //custom hook
+    handleSearch(e);
+  };
 
   return (
     <>
@@ -61,8 +70,8 @@ function NavBar(props) {
                     input: classes.inputInput,
                   }}
                   inputProps={{ 'aria-label': 'search' }}
-                  onChange={handleSearch}
-                  value={resetValue ? '' : undefined}
+                  onChange={handleChangeTerm}
+                  value={input}
                 />
               </div>
               <IconButton
