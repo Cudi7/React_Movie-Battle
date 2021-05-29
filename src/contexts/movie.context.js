@@ -6,7 +6,7 @@ import useLocalStorage from '../hooks/useLocalStorage';
 export const MovieContext = createContext();
 
 export function MovieProvider(props) {
-  const [val, handleVal] = useLocalStorage('movies');
+  const [val, handleVal, restoreVal] = useLocalStorage('movies');
   const [currentMovieList, setCurrentMovieList] = useState('');
   const [initialVal, setInitialVal] = useState([]);
   const [primaryMovie, setPrimaryMovie] = useState('');
@@ -42,6 +42,7 @@ export function MovieProvider(props) {
         input,
         handleChange,
         reset,
+        restoreVal,
       }}
     >
       {props.children}

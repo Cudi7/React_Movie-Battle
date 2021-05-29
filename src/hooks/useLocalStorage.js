@@ -18,7 +18,11 @@ function useLocalStorage(initialVal) {
     window.localStorage.setItem(initialVal, JSON.stringify(newVal));
   };
 
-  return [val, handleVal];
+  const restoreVal = (val) => {
+    window.localStorage.removeItem(val);
+  };
+
+  return [val, handleVal, restoreVal];
 }
 
 export default useLocalStorage;

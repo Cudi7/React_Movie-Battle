@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -6,9 +6,16 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import useHeroStyles from './HeroStyles';
 import { Box, Container, CssBaseline } from '@material-ui/core';
+import { MovieContext } from '../../contexts/movie.context';
 
 function Hero(props) {
   const classes = useHeroStyles();
+  const { restoreVal, handleVal } = useContext(MovieContext);
+
+  const handleRestoreApp = () => {
+    restoreVal('movies');
+    window.location.reload();
+  };
 
   return (
     <>
@@ -64,13 +71,20 @@ function Hero(props) {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">
+                <Button size="small" variant="outlined">
                   <a
                     href="https://github.com/Cudi7"
                     style={{ color: 'inherit', textDecoration: 'none' }}
                   >
                     Learn More
                   </a>
+                </Button>
+                <Button
+                  size="small"
+                  onClick={handleRestoreApp}
+                  style={{ marginLeft: 'auto' }}
+                >
+                  Restore App
                 </Button>
               </CardActions>
             </Card>
