@@ -21,11 +21,12 @@
 - ✅ secondary navbar make it disapear on scroll
 - ✅fix format inside details when fighting
 - ✅Custom Hooks (input)
+- ✅add restore app button next to learn more
 
 - fix netlify broken links (change router with https://etc..)
 - ❓fix weird bug with data desapearing and setting localStorage to "" (UNABLE TO FIND BUG)
 - fix unexisting search data and display error message
-- add restore app button next to learn more (and add description to report bug to me)
+
 - deploy and announce working on refactor to useContext fist and then redux
 - begin with refactor
 

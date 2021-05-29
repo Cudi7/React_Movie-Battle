@@ -12,13 +12,21 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     height: '100vh',
   },
+  secondRoot: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
+    },
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
-export default function Loading() {
+export default function Loading({ from }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={from === 'movies' ? classes.secondRoot : classes.root}>
       <CircularProgress color="primary" size={80} />
     </div>
   );

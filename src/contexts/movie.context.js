@@ -12,12 +12,15 @@ export function MovieProvider(props) {
   const [primaryMovie, setPrimaryMovie] = useState('');
   const [secondaryMovie, setSecondaryMovie] = useState('');
   const [input, handleChange, reset] = useInput();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchInitalValHandler = async () => {
+      setLoading(true);
       const initialValues = await fetchInitialVal();
 
       setInitialVal(initialValues.map((val) => ({ ...val, liked: false })));
+      setLoading(false);
     };
     val === 'movies' ? fetchInitalValHandler() : setInitialVal(val);
   }, [val]);
@@ -43,6 +46,7 @@ export function MovieProvider(props) {
         handleChange,
         reset,
         restoreVal,
+        loading,
       }}
     >
       {props.children}
