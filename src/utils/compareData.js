@@ -22,8 +22,14 @@ const compareAwardsNumber = (data) => {
   return numberSum;
 };
 
-const compareMetascore = (data) =>
-  data.primary[3].value > data.secondary[3].value;
+const compareMetascore = (data) => {
+  const primaryData =
+    data.primary[3].value === 'N/A' ? 0 : data.primary[3].value;
+  const secondaryData =
+    data.secondary[3].value === 'N/A' ? 0 : data.secondary[3].value;
+
+  return primaryData > secondaryData;
+};
 
 const compareRating = (data) =>
   Number(data.primary[4].value) > Number(data.secondary[4].value);
