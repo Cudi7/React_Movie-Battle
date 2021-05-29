@@ -31,6 +31,7 @@ import FightModal from '../Modal/FightModal';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import { MovieContext } from '../../contexts/movie.context';
 import Loading from '../Loading/Loading';
+import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn';
 
 function MovieDetails(props) {
   const [currentDetails, setCurrentDetails] = useState('');
@@ -145,7 +146,7 @@ function MovieDetails(props) {
                     ? primaryMovie
                       ? 'First Fighter'
                       : 'Second Fighter'
-                    : 'Select Fighter'}
+                    : 'Select'}
                 </Button>
               ) : (
                 <>
@@ -162,7 +163,7 @@ function MovieDetails(props) {
                 component={RouterLink}
                 to="/"
               >
-                Go Back
+                <KeyboardReturnIcon />
               </Button>
               <IconButton
                 className={clsx(classes.expand, {

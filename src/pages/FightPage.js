@@ -18,6 +18,7 @@ import ModalFight from '../components/CardFight/ModalFight/ModalFight';
 import { Link as RouterLink } from 'react-router-dom';
 import Hero from '../components/Hero/Hero';
 import Loading from '../components/Loading/Loading';
+import { useHistory } from 'react-router-dom';
 
 function FightPage(props) {
   const { fightValues, handleReset } = props;
@@ -27,6 +28,8 @@ function FightPage(props) {
 
   const [primaryWinCount, setPrimaryWinCount] = useState(0);
   const [secondaryWinCount, setSecondaryWinCount] = useState(0);
+
+  let history = useHistory();
 
   useEffect(() => {
     const handleSearch = async () => {
@@ -47,7 +50,7 @@ function FightPage(props) {
       });
     };
 
-    fightValues && handleSearch();
+    fightValues.primary ? handleSearch() : history.push('/');
   }, []);
 
   useEffect(() => {
