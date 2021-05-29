@@ -25,7 +25,7 @@ function NavBarSecondary(props) {
               color="inherit"
               aria-label="open drawer"
               component={RouterLink}
-              to="/liked-movies"
+              to="/likedMovies"
               style={{ marginLeft: 'auto' }}
             >
               <FavoriteBorderIcon />

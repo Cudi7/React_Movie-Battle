@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
 function LikedMovies(props) {
   const { currentMovieList } = useContext(MovieContext);
   const [likedElement, setLikedElement] = useState(false);
+  //fix weird bug with material ui styles (8px margin appearing on refresh)
+  document.body.style.margin = 0;
 
   useEffect(() => {
     if (currentMovieList) {
@@ -50,7 +52,7 @@ function LikedMovies(props) {
           className={classes.root}
           style={{ margin: '7rem auto 3rem', textAlign: 'center' }}
         >
-          This list is empty, click 'Learn More' on any movie to add it here
+          This list is empty... 😪
         </h1>
       )}
     </Paper>

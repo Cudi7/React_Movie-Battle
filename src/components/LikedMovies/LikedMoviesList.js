@@ -22,7 +22,6 @@ export default function LikedMoviesList(props) {
 
   const { currentMovieList, setCurrentMovieList } = useContext(MovieContext);
 
-  const [value, setValue] = useLocalStorage('movies');
   const classes = useStyles();
 
   const handleClick = (id) => {

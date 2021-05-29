@@ -27,7 +27,7 @@
 - ❓fix weird bug with data desapearing and setting localStorage to "" (UNABLE TO FIND BUG)
 - fix unexisting search data and display error message
 
-- deploy and announce working on refactor  redux
+- create README, make it public and announce working on refactor with redux
 - begin with refactor
 
 

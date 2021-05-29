@@ -80,7 +80,7 @@ function NavBar(props) {
                 color="inherit"
                 aria-label="open drawer"
                 component={RouterLink}
-                to="/liked-movies"
+                to="/likedMovies"
               >
                 <FavoriteBorderIcon />
               </IconButton>

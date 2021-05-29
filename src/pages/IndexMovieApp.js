@@ -9,7 +9,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import MovieDetails from '../components/MovieDetails/MovieDetails';
 import FightPage from './FightPage';
 import LikedMovies from './LikedMovies';
-import useLocalStorage from '../hooks/useLocalStorage';
 import { MovieContext } from '../contexts/movie.context';
 
 function MovieApp() {
@@ -128,7 +127,7 @@ function MovieApp() {
             loading={loading}
           />
         </Route>
-        <Route exact path="/liked-movies">
+        <Route exact path="/likedMovies">
           <NavBarSecondary />
           <LikedMovies />
         </Route>
