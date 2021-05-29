@@ -54,62 +54,71 @@ function FightPage(props) {
     if (movieItems.primary && movieItems.secondary) {
       //award comparision
       const primaryWinsAward = compareAwards(movieItems);
+      let awardWinner;
       let primaryWins = false;
 
-      if (primaryWinsAward) {
-        setPrimaryWinCount((currCount) => currCount + 1);
-        primaryWins = true;
-      } else {
-        setSecondaryWinCount((currCount) => currCount + 1);
+      if (primaryWinsAward !== 'N/A') {
+        if (primaryWinsAward) {
+          setPrimaryWinCount((currCount) => currCount + 1);
+          primaryWins = true;
+        } else {
+          setSecondaryWinCount((currCount) => currCount + 1);
+        }
+        awardWinner = primaryWins
+          ? (movieItems.primary[1].winner = true)
+          : (movieItems.secondary[1].winner = true);
       }
-      const awardWinner = primaryWins
-        ? (movieItems.primary[1].winner = true)
-        : (movieItems.secondary[1].winner = true);
 
       //metaScore comparision
       const primaryWinsMeta = compareMetascore(movieItems);
+      let metaWinner;
       primaryWins = false;
 
-      if (primaryWinsMeta) {
-        setPrimaryWinCount((currCount) => currCount + 1);
-        primaryWins = true;
-      } else {
-        setSecondaryWinCount((currCount) => currCount + 1);
+      if (primaryWinsMeta !== 'N/A') {
+        if (primaryWinsMeta) {
+          setPrimaryWinCount((currCount) => currCount + 1);
+          primaryWins = true;
+        } else {
+          setSecondaryWinCount((currCount) => currCount + 1);
+        }
+        metaWinner = primaryWins
+          ? (movieItems.primary[3].winner = true)
+          : (movieItems.secondary[3].winner = true);
       }
-      const metaWinner = primaryWins
-        ? (movieItems.primary[3].winner = true)
-        : (movieItems.secondary[3].winner = true);
-
       //Rating comparision
 
       const primaryWinsRating = compareRating(movieItems);
+      let ratingWinner;
       primaryWins = false;
 
-      if (primaryWinsRating) {
-        setPrimaryWinCount((currCount) => currCount + 1);
-        primaryWins = true;
-      } else {
-        setSecondaryWinCount((currCount) => currCount + 1);
+      if (primaryWinsRating !== 'N/A') {
+        if (primaryWinsRating) {
+          setPrimaryWinCount((currCount) => currCount + 1);
+          primaryWins = true;
+        } else {
+          setSecondaryWinCount((currCount) => currCount + 1);
+        }
+        ratingWinner = primaryWins
+          ? (movieItems.primary[4].winner = true)
+          : (movieItems.secondary[4].winner = true);
       }
-      const ratingWinner = primaryWins
-        ? (movieItems.primary[4].winner = true)
-        : (movieItems.secondary[4].winner = true);
-
       // Votes comparision
 
       const primaryWinsVotes = compareVotes(movieItems);
+      let votesWinner;
       primaryWins = false;
 
-      if (primaryWinsVotes) {
-        setPrimaryWinCount((currCount) => currCount + 1);
-        primaryWins = true;
-      } else {
-        setSecondaryWinCount((currCount) => currCount + 1);
+      if (primaryWinsVotes !== 'N/A') {
+        if (primaryWinsVotes) {
+          setPrimaryWinCount((currCount) => currCount + 1);
+          primaryWins = true;
+        } else {
+          setSecondaryWinCount((currCount) => currCount + 1);
+        }
+        votesWinner = primaryWins
+          ? (movieItems.primary[5].winner = true)
+          : (movieItems.secondary[5].winner = true);
       }
-      const votesWinner = primaryWins
-        ? (movieItems.primary[5].winner = true)
-        : (movieItems.secondary[5].winner = true);
-
       //Box office comparision
 
       const primaryWinsBox = compareBoxOffice(movieItems);
@@ -132,6 +141,8 @@ function FightPage(props) {
           votesWinner,
         });
       } else {
+        console.log(movieItems);
+        console.log(primaryWinsBox);
         const boxOfficeWinner = primaryWins
           ? (movieItems.primary[7].winner = true)
           : (movieItems.secondary[7].winner = true);
