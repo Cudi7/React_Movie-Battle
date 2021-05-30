@@ -6,7 +6,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     position: 'absolute',
     top: '10%',
-    right: '0%',
+    left: '50%',
+    transform: 'translateX(-50%)',
     '& > * + *': {
       marginTop: theme.spacing(2),
     },
