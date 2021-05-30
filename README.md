@@ -1,6 +1,6 @@
 # React Movie Battle App
 
-> React Movie App v1.0 build without useContext or Redux (I know, its been crazy believe me)
+> React Movie App v1.0 build without Redux (I know, its been crazy believe me)
 
 ## Table of contents
 
@@ -14,72 +14,88 @@
 
 ## General info
 
-Following my training I decided to create an app that I could add everything I know about React, I decided to not use Redux because I didn't wanted to be the "Redux for all guy" and it has been a great mistake
+Following my training I decided to create an app that I could add everything I know about React, I decided to not use Redux because I didn't wanted to be the "Redux for all guy" and I also wanted to dive down into useState and useContext, and after all, it has been a great mistake.
+
+I consider this app my most advanved React app, yet, the most junior app because of the lack of comments and organization
 
 ## Next
 
-This has been very tougth, keep in mind that I only wanted to use useState because I wanted to do it without tools that simplified the code of the app, because it felt like "cheating", tools like Redux or useContext.
+This has been very tougth, keep in mind that I only wanted to use useState and useContext because I wanted to do it without tools that simplified the code of the app, because it felt like "cheating", and I wanted to make an app that was full react.
 
 And you know what? worst decision ever, it's been a mess.
 
-Now I'm working on V2.0 which will use Redux and refactoring this version to use useContext
+Now I'm working on V2.0 which will use Redux and clean the overhall code
 
 ## Code Examples
 
+./src/contexts/movie.context.js
+
 ```
-export const todosSlice = createSlice({
-  name: 'todos',
-  initialState: [],
-  reducers: {
-    addedTodo: (state, action) => {
-      state.push({
-        id: uuid(),
-        author: action.payload.name || 'anonymous',
-        description: action.payload.description,
-        completed: false,
-        public: action.payload.public || false,
-      });
-    },
-    toggledCompleted: (state, action) => {
-      const index = state.findIndex((todo) => todo.id === action.payload);
+import React, { useState, createContext, useEffect } from 'react';
+import { fetchInitialVal } from '../api/api';
+import useInput from '../hooks/useInput';
+import useLocalStorage from '../hooks/useLocalStorage';
 
-      state[index].completed = !state[index].completed;
-    },
-    toggledEditing: (state, action) => {
-      const index = state.findIndex((todo) => todo.id === action.payload);
+export const MovieContext = createContext();
 
-      state[index].editing = !state[index].editing;
-    },
-    toggledPublic: (state, action) => {
-      const index = state.findIndex((todo) => todo.id === action.payload);
+export function MovieProvider(props) {
+  const [val, handleVal, restoreVal] = useLocalStorage('movies');
+  const [currentMovieList, setCurrentMovieList] = useState('');
+  const [initialVal, setInitialVal] = useState([]);
+  const [primaryMovie, setPrimaryMovie] = useState('');
+  const [secondaryMovie, setSecondaryMovie] = useState('');
+  const [input, handleChange, reset] = useInput();
+  const [loading, setLoading] = useState(false);
 
-      state[index].public = !state[index].public;
-    },
-    editedTodo: (state, action) => {
-      const index = state.findIndex((todo) => todo.id === action.payload.id);
+  useEffect(() => {
+    const fetchInitalValHandler = async () => {
+      setLoading(true);
+      const initialValues = await fetchInitialVal();
 
-      state[index].description = action.payload.description;
-    },
-    deletedTodo: (state, action) => {
-      const index = state.findIndex((todo) => todo.id === action.payload);
+      setInitialVal(initialValues.map((val) => ({ ...val, liked: false })));
+      setLoading(false);
+    };
+    val === 'movies' ? fetchInitalValHandler() : setInitialVal(val);
+  }, [val]);
 
-      state.splice(index, 1);
-    },
-  },
-});
+  useEffect(() => {
+    setCurrentMovieList(initialVal);
+  }, [initialVal, setCurrentMovieList]);
+
+  useEffect(() => {
+    handleVal(currentMovieList);
+  }, [currentMovieList, handleVal]);
+
+  return (
+    <MovieContext.Provider
+      value={{
+        currentMovieList,
+        setCurrentMovieList,
+        setPrimaryMovie,
+        primaryMovie,
+        setSecondaryMovie,
+        secondaryMovie,
+        input,
+        handleChange,
+        reset,
+        restoreVal,
+        loading,
+      }}
+    >
+      {props.children}
+    </MovieContext.Provider>
+  );
+}
 ```
 
 ## Features
 
 The project is created with:
 
-- Hooks.
-- Custom Hooks (useLocalStorage and useInputForm).
-- Redux with a modern approach using Redux Toolkit.
+- React
+- Hooks && Custom Hooks (useLocalStorage and useInputForm).
 - Material UI
 - React Router
-- Ducks pattern
-- Logical convention names, AKA past tense in redux actions, because when an anction has been dispatched it means that it has already happened, so its doesn't make sense to name it ADD or DELETE, it should be ADDED, or DELETED or even better todo/addedTodo or todo/removedTodo
 
 ## Setup
 
@@ -93,7 +109,7 @@ You will also see any lint errors in the console.
 
 ## Status
 
-Finished, but, hopping to add more features like login, logout and register using node/express and mongodb/mongoose
+Finished, but, refactor to redux in curse
 
 ## Contact
 
