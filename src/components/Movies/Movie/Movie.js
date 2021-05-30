@@ -107,7 +107,7 @@ function Movie(props) {
             aria-haspopup="true"
             onClick={handleMenu}
           >
-            <AddCircleRoundedIcon color="error" fontSize="big" />
+            <AddCircleRoundedIcon color="error" fontSize="default" />
           </IconButton>
 
           <Menu

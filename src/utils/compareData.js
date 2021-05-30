@@ -49,7 +49,10 @@ const compareRating = (data) => {
 
   if (firstRating === 'N/A' && secondRating === 'N/A') return 'N/A';
 
-  return firstRating > secondRating;
+  return (
+    (isNaN(firstRating) ? 0 : firstRating) >
+    (isNaN(secondRating) ? 0 : secondRating)
+  );
 };
 
 const compareVotes = (data) => {
@@ -84,7 +87,10 @@ const compareBoxOffice = (data) => {
   )
     return undefined;
 
-  return boxOfficeOne > boxOfficeTwo;
+  return (
+    (isNaN(boxOfficeOne) ? 0 : boxOfficeOne) >
+    (isNaN(boxOfficeTwo) ? 0 : boxOfficeTwo)
+  );
 };
 
 export {

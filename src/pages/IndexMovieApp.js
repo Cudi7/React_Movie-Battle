@@ -18,7 +18,7 @@ function MovieApp() {
   const [fightValues, setFightValues] = useState({});
   const [figthersId, setFigthersId] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const [searchMovieList, setSearchMovieList] = useState([]);
@@ -41,6 +41,13 @@ function MovieApp() {
   }, [searchTerm]);
 
   function handleSearch(e) {
+    if (!e.target.value.trim()) {
+      setLoading(false);
+      setSearchMovieList([]);
+      return;
+    }
+
+    setLoading(true);
     if (timeoutId) clearTimeout(timeoutId);
 
     setTimeoutId(
@@ -51,6 +58,7 @@ function MovieApp() {
   }
 
   function handleError() {
+    setLoading(false);
     setError(true);
 
     setTimeout(() => setError(false), 3000);
@@ -102,6 +110,8 @@ function MovieApp() {
             searchMovieList={searchMovieList}
             setSearchMovieList={setSearchMovieList}
             error={error}
+            loading={loading}
+            setLoading={setLoading}
           />
           <Grid container justify="center" style={{ marginTop: '1rem' }}>
             <Grid item xs={11} md={10} lg={9}>

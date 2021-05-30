@@ -50,8 +50,6 @@ function CardFight(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
-  console.log(movieComparative);
-
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };

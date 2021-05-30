@@ -5,6 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Avatar, ClickAwayListener, ListItemAvatar } from '@material-ui/core';
 import { MovieContext } from '../../../contexts/movie.context';
+import LoadingSearch from '../../Loading/LoadingSearch';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SearchItems(props) {
   const classes = useStyles();
-  const { searchMovieList, setSearchMovieList, setResetValue } = props;
+  const { searchMovieList, setSearchMovieList, setResetValue, loading } = props;
 
   const { currentMovieList, setCurrentMovieList, reset } =
     useContext(MovieContext);
@@ -60,32 +61,36 @@ function SearchItems(props) {
 
   return (
     <ClickAwayListener onClickAway={handleClickAwayEvent}>
-      <div className={classes.root}>
+      <div className={(loading || searchMovieList.length) && classes.root}>
         {open ? (
           <List component="nav" aria-label="secondary">
-            {searchMovieList.map((el, index) => {
-              return (
-                <>
-                  <ListItem
-                    button
-                    divider={
-                      searchMovieList.indexOf(el) < searchMovieList.length - 1
-                    }
-                    onClick={() => handleClick(el)}
-                    key={Date.now()}
-                  >
-                    <ListItemAvatar>
-                      <Avatar
-                        alt={el.Title}
-                        src={el.Poster}
-                        className={classes.large}
-                      />
-                    </ListItemAvatar>
-                    <ListItemText primary={el.Title} key={Date.now()} />
-                  </ListItem>
-                </>
-              );
-            })}
+            {loading ? (
+              <LoadingSearch />
+            ) : (
+              searchMovieList.map((el, index) => {
+                return (
+                  <>
+                    <ListItem
+                      button
+                      divider={
+                        searchMovieList.indexOf(el) < searchMovieList.length - 1
+                      }
+                      onClick={() => handleClick(el)}
+                      key={Date.now()}
+                    >
+                      <ListItemAvatar>
+                        <Avatar
+                          alt={el.Title}
+                          src={el.Poster}
+                          className={classes.large}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText primary={el.Title} key={Date.now()} />
+                    </ListItem>
+                  </>
+                );
+              })
+            )}
           </List>
         ) : null}
       </div>

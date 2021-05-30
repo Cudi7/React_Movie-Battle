@@ -33,11 +33,22 @@ function NavBar(props) {
 
   const { input, handleChange } = useContext(MovieContext);
 
-  const { handleSearch, searchMovieList, setSearchMovieList, error } = props;
+  const {
+    handleSearch,
+    searchMovieList,
+    setSearchMovieList,
+    error,
+    loading,
+    setLoading,
+  } = props;
 
   useEffect(() => {
     setTimeout(() => setResetValue(false), 500);
   }, [resetValue]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [searchMovieList.length]);
 
   const handleChangeTerm = (e) => {
     handleChange(e); //custom hook
@@ -87,13 +98,13 @@ function NavBar(props) {
             </Toolbar>
           </AppBar>
         </HideOnScroll>
-        {searchMovieList.length && (
-          <SearchItems
-            searchMovieList={searchMovieList}
-            setSearchMovieList={setSearchMovieList}
-            setResetValue={setResetValue}
-          />
-        )}
+        <SearchItems
+          searchMovieList={searchMovieList}
+          setSearchMovieList={setSearchMovieList}
+          setResetValue={setResetValue}
+          loading={loading}
+        />
+        )
       </div>
       {error && <SimpleAlerts />}
     </>
