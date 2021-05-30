@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
     top: '10%',
     left: '50%',
     transform: 'translateX(-50%)',
+    paddingTop: '1rem',
     '& > * + *': {
       marginTop: theme.spacing(2),
     },
