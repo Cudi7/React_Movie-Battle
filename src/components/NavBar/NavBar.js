@@ -12,8 +12,8 @@ import useNavBarStyles from './NavBarStyles';
 
 import { Link as RouterLink } from 'react-router-dom';
 import SearchItems from './SearchItems/SearchItems';
-import useInput from '../../hooks/useInput';
 import { MovieContext } from '../../contexts/movie.context';
+import SimpleAlerts from '../Alert/Alert';
 
 function HideOnScroll(props) {
   const { children } = props;
@@ -33,7 +33,7 @@ function NavBar(props) {
 
   const { input, handleChange } = useContext(MovieContext);
 
-  const { handleSearch, searchMovieList, setSearchMovieList } = props;
+  const { handleSearch, searchMovieList, setSearchMovieList, error } = props;
 
   useEffect(() => {
     setTimeout(() => setResetValue(false), 500);
@@ -95,6 +95,7 @@ function NavBar(props) {
           />
         )}
       </div>
+      {error && <SimpleAlerts />}
     </>
   );
 }

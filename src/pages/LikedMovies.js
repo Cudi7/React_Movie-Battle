@@ -40,7 +40,7 @@ function LikedMovies(props) {
 
       {likedElement ? (
         currentMovieList.map(
-          (movie, index) =>
+          (movie) =>
             movie.liked && (
               <List className={classes.root}>
                 <LikedMoviesList movie={movie} />

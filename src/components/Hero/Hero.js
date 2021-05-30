@@ -10,7 +10,7 @@ import { MovieContext } from '../../contexts/movie.context';
 
 function Hero(props) {
   const classes = useHeroStyles();
-  const { restoreVal, handleVal } = useContext(MovieContext);
+  const { restoreVal } = useContext(MovieContext);
 
   const handleRestoreApp = () => {
     restoreVal('movies');

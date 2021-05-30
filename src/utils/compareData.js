@@ -30,7 +30,10 @@ const compareMetascore = (data) => {
 
   if (primaryData === 'N/A' && secondaryData === 'N/A') return 'N/A';
 
-  return primaryData > secondaryData;
+  return (
+    (primaryData === 'N/A' ? 0 : primaryData) >
+    (secondaryData === 'N/A' ? 0 : secondaryData)
+  );
 };
 
 const compareRating = (data) => {
@@ -59,9 +62,12 @@ const compareVotes = (data) => {
       ? 'N/A'
       : Number(data.secondary[5].value.replaceAll(',', ''));
 
-  if (firstVote === 'N/A' && secondVote && 'N/A') return 'N/A';
+  if (firstVote === 'N/A' && secondVote === 'N/A') return 'N/A';
 
-  return firstVote > secondVote;
+  return (
+    (firstVote === 'N/A' ? 0 : firstVote) >
+    (secondVote === 'N/A' ? 0 : secondVote)
+  );
 };
 
 const compareBoxOffice = (data) => {

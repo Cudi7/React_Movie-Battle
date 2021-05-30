@@ -7,7 +7,7 @@ import useNavBarStyles from './NavBarStyles';
 import { Link as RouterLink } from 'react-router-dom';
 import HomeIcon from '@material-ui/icons/Home';
 
-function NavBarSecondary(props) {
+function NavBarSecondary() {
   const classes = useNavBarStyles();
 
   return (

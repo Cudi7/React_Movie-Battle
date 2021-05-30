@@ -17,9 +17,9 @@ function MovieApp() {
 
   const [fightValues, setFightValues] = useState({});
   const [figthersId, setFigthersId] = useState([]);
-  const [likedMovies, setLikedMovies] = useState([]);
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const [searchMovieList, setSearchMovieList] = useState([]);
 
@@ -34,7 +34,7 @@ function MovieApp() {
     const fetchMovieHandler = async () => {
       const data = await fetchMovie(searchTerm);
 
-      data && setSearchMovieList(data);
+      data ? setSearchMovieList(data) : handleError();
     };
 
     searchTerm && fetchMovieHandler();
@@ -46,8 +46,14 @@ function MovieApp() {
     setTimeoutId(
       setTimeout(() => {
         setSearchTerm(e.target.value.trim());
-      }, 1000) //set it to 500
+      }, 1000)
     );
+  }
+
+  function handleError() {
+    setError(true);
+
+    setTimeout(() => setError(false), 3000);
   }
 
   const handleLikes = (id) => {
@@ -95,6 +101,7 @@ function MovieApp() {
             handleSearch={handleSearch}
             searchMovieList={searchMovieList}
             setSearchMovieList={setSearchMovieList}
+            error={error}
           />
           <Grid container justify="center" style={{ marginTop: '1rem' }}>
             <Grid item xs={11} md={10} lg={9}>
@@ -114,7 +121,6 @@ function MovieApp() {
             idArray={figthersId}
             handleSelection={handleSelection}
             handleReset={handleReset}
-            setLikedMovies={setLikedMovies}
             handleLikes={handleLikes}
           />
         </Route>

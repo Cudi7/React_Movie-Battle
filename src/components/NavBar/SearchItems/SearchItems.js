@@ -4,7 +4,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Avatar, ClickAwayListener, ListItemAvatar } from '@material-ui/core';
-import useLocalStorage from '../../../hooks/useLocalStorage';
 import { MovieContext } from '../../../contexts/movie.context';
 
 const useStyles = makeStyles((theme) => ({

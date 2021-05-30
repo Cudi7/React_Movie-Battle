@@ -22,12 +22,12 @@
 - ✅fix format inside details when fighting
 - ✅Custom Hooks (input)
 - ✅add restore app button next to learn more
-
 - ✅ fix netlify broken links
+- ✅ fix unexisting search data and display error message
 - ❓fix weird bug with data desapearing and setting localStorage to "" (UNABLE TO FIND BUG)
-- fix unexisting search data and display error message
+- ✅ clean code and refactor if possible (not to mutch, because I will end up switching to redux)
 
-- create README, make it public and announce working on refactor with redux
+- ✅create README, make it public and announce working on refactor with redux
 - begin with refactor
 
 
