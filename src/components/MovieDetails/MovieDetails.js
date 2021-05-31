@@ -42,8 +42,6 @@ function MovieDetails(props) {
   const [loadingDetails, setLoadingDetails] = useState(true);
   const classes = useMovieDetailsStyles();
 
-  console.log('inside details');
-
   const { idArray, handleSelection, handleReset, handleLikes } = props;
 
   const { currentMovieList, primaryMovie, secondaryMovie } =

@@ -144,8 +144,6 @@ function FightPage(props) {
           votesWinner,
         });
       } else {
-        console.log(movieItems);
-        console.log(primaryWinsBox);
         const boxOfficeWinner = primaryWins
           ? (movieItems.primary[7].winner = true)
           : (movieItems.secondary[7].winner = true);
