@@ -1,6 +1,6 @@
 # React Movie Battle App
 
-> React Movie App v1.0 build with Material-UI, Hooks && React-Router
+> React Movie App v1.0 build with Material-UI, Hooks, React-Router && omdbapi
 
 # Live demo
 
