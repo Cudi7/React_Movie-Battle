@@ -1,6 +1,12 @@
 # React Movie Battle App
 
-> React Movie App v1.0 build without Redux (I know, its been crazy believe me)
+> React Movie App v1.0 build with Material-UI, Hooks && React-Router
+
+# Live demo
+
+> https://cranky-thompson-24c649.netlify.app/
+
+![Design preview for the  coding challenge](./Screenshot_1.jpg)
 
 ## Table of contents
 
@@ -14,17 +20,13 @@
 
 ## General info
 
-Following my training I decided to create an app that I could add everything I know about React, I decided to not use Redux because I didn't wanted to be the "Redux for all guy" and I also wanted to dive down into useState and useContext, and after all, it has been a great mistake.
+Following my training, I decided to develop an app that I could add everything I know about React, I decided to not use Redux because I didn't want to be the "Redux for all guy" and I also wanted to dive down into useState and useContext, and after all, it has been a great mistake.
 
-I consider this app my most advanved React app, yet, the most junior app because of the lack of comments and organization
+I consider this app my most advanced React app, yet, the most junior app because of the lack of comments and organization, and that has taught me how to do it better on my following projects.
 
 ## Next
 
-This has been very tougth, keep in mind that I only wanted to use useState and useContext because I wanted to do it without tools that simplified the code of the app, because it felt like "cheating", and I wanted to make an app that was full react.
-
-And you know what? worst decision ever, it's been a mess.
-
-Now I'm working on V2.0 which will use Redux and clean the overhall code
+Now I'm working on V2.0 which will use modern and clean Redux
 
 ## Code Examples
 
