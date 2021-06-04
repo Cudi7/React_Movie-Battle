@@ -1,34 +1,30 @@
 import React, { useState, createContext, useEffect } from 'react';
-import { fetchInitialVal } from '../api/api';
+import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { fetchInitialMovies, selectMovies } from '../store/ui/moviesSlice';
 
 export const MovieContext = createContext();
 
 export function MovieProvider(props) {
   const [val, handleVal, restoreVal] = useLocalStorage('movies');
-  const [currentMovieList, setCurrentMovieList] = useState('');
-  const [initialVal, setInitialVal] = useState([]);
   const [primaryMovie, setPrimaryMovie] = useState('');
   const [secondaryMovie, setSecondaryMovie] = useState('');
   const [input, handleChange, reset] = useInput();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchInitalValHandler = async () => {
-      setLoading(true);
-      const initialValues = await fetchInitialVal();
+  const dispatch = useDispatch();
+  const currentMovieList = useSelector(selectMovies());
 
-      setInitialVal(initialValues.map((val) => ({ ...val, liked: false })));
-      setLoading(false);
+  //fetch initial data when loading page if localStorage is empty
+  useEffect(() => {
+    const fetchInitalValHandler = (type) => {
+      dispatch(fetchInitialMovies(type));
     };
-    val === 'movies' ? fetchInitalValHandler() : setInitialVal(val);
+    val === 'movies' ? fetchInitalValHandler() : fetchInitalValHandler(val);
   }, [val]);
 
-  useEffect(() => {
-    setCurrentMovieList(initialVal);
-  }, [initialVal, setCurrentMovieList]);
-
+  //everytime there is a change, it saves to localStorage
   useEffect(() => {
     handleVal(currentMovieList);
   }, [currentMovieList, handleVal]);
@@ -36,8 +32,6 @@ export function MovieProvider(props) {
   return (
     <MovieContext.Provider
       value={{
-        currentMovieList,
-        setCurrentMovieList,
         setPrimaryMovie,
         primaryMovie,
         setSecondaryMovie,

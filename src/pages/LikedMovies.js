@@ -1,21 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import LikedMoviesList from '../components/LikedMovies/LikedMoviesList';
-import { List, makeStyles, Paper } from '@material-ui/core';
-import { MovieContext } from '../contexts/movie.context';
+import { List, Paper } from '@material-ui/core';
+import useLikedMoviesStyles from './LikedMoviesStyles';
+import { useSelector } from 'react-redux';
+import { selectMovies } from '../store/ui/moviesSlice';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-    margin: '0.5rem auto 0',
-  },
-}));
-
-function LikedMovies(props) {
-  const { currentMovieList } = useContext(MovieContext);
+function LikedMovies() {
+  const currentMovieList = useSelector(selectMovies());
   const [likedElement, setLikedElement] = useState(false);
+
   //fix weird bug with material ui styles (8px margin appearing on refresh)
   document.body.style.margin = 0;
 
@@ -25,7 +19,7 @@ function LikedMovies(props) {
     }
   }, [currentMovieList]);
 
-  const classes = useStyles();
+  const classes = useLikedMoviesStyles();
 
   return (
     <Paper style={{ minHeight: '100vh' }}>
@@ -42,7 +36,7 @@ function LikedMovies(props) {
         currentMovieList.map(
           (movie) =>
             movie.liked && (
-              <List className={classes.root}>
+              <List className={classes.root} key={movie.imdbID}>
                 <LikedMoviesList movie={movie} />
               </List>
             )

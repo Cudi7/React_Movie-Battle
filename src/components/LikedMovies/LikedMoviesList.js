@@ -1,36 +1,22 @@
-import React, { useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import { IconButton, ListItemSecondaryAction } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { MovieContext } from '../../contexts/movie.context';
-
-const useStyles = makeStyles((theme) => ({
-  large: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
-    marginRight: theme.spacing(2),
-  },
-}));
+import { useDispatch } from 'react-redux';
+import { toggleLike } from '../../store/ui/moviesSlice';
+import useLikedMovieListStyles from './LikedMovieListStyles';
 
 export default function LikedMoviesList(props) {
   const { movie } = props;
 
-  const { currentMovieList, setCurrentMovieList } = useContext(MovieContext);
+  const classes = useLikedMovieListStyles();
+  const dispatch = useDispatch();
 
-  const classes = useStyles();
-
-  const handleClick = (id) => {
-    const filteredList = currentMovieList.map((el) => {
-      if (el.imdbID === id) {
-        el.liked = false;
-      }
-      return el;
-    });
-    setCurrentMovieList(filteredList);
+  const handleDelete = (id) => {
+    dispatch(toggleLike(id));
   };
 
   return (
@@ -47,7 +33,7 @@ export default function LikedMoviesList(props) {
         <IconButton
           edge="end"
           aria-label="delete"
-          onClick={() => handleClick(movie.imdbID)}
+          onClick={() => handleDelete(movie.imdbID)}
         >
           <DeleteIcon />
         </IconButton>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { fetchMovie } from '../../api/api';
 
@@ -27,13 +27,13 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import MovieIcon from '@material-ui/icons/Movie';
 import { Link as RouterLink } from 'react-router-dom';
 import { formatedDataDetails } from '../../utils/formatedData';
-import FightModal from '../Modal/FightModal';
-import RotateLeftIcon from '@material-ui/icons/RotateLeft';
-import { MovieContext } from '../../contexts/movie.context';
+
 import Loading from '../Loading/Loading';
 import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectMovies, toggleLike } from '../../store/ui/moviesSlice';
 
-function MovieDetails(props) {
+function MovieDetails() {
   const [currentDetails, setCurrentDetails] = useState('');
   const [movie, setMovie] = useState();
   const [detailsObject, setDetailsObject] = useState('');
@@ -42,10 +42,9 @@ function MovieDetails(props) {
   const [loadingDetails, setLoadingDetails] = useState(true);
   const classes = useMovieDetailsStyles();
 
-  const { idArray, handleSelection, handleReset, handleLikes } = props;
+  const currentMovieList = useSelector(selectMovies());
 
-  const { currentMovieList, primaryMovie, secondaryMovie } =
-    useContext(MovieContext);
+  const dispatch = useDispatch();
 
   let { id } = useParams();
 
@@ -56,22 +55,22 @@ function MovieDetails(props) {
 
   useEffect(() => {
     const handleDetailsFetch = async () => {
-      if (currentMovieList) {
-        const data = await fetchMovie(id, 'searchById');
+      const data = await fetchMovie(id, 'searchById');
 
-        const detailsObject = formatedDataDetails(data);
+      const detailsObject = formatedDataDetails(data);
 
-        setCurrentDetails(data);
-        setDetailsObject(detailsObject);
-        setMovie(currentMovieList.find((el) => el.imdbID === id));
-        setLoadingDetails(false);
-      }
+      setCurrentDetails(data);
+      setDetailsObject(detailsObject);
+      setMovie(currentMovieList.find((el) => el.imdbID === id));
+      setLoadingDetails(false);
     };
 
     id && handleDetailsFetch();
   }, [id, currentMovieList]);
 
-  const selected = idArray.find((el) => el === currentDetails.imdbID);
+  const handleLikeState = (id) => {
+    dispatch(toggleLike(id));
+  };
 
   return (
     <>
@@ -107,7 +106,7 @@ function MovieDetails(props) {
             <CardActions disableSpacing>
               <IconButton
                 aria-label="add to favorites"
-                onClick={() => handleLikes(currentDetails.imdbID)}
+                onClick={() => handleLikeState(currentDetails.imdbID)}
                 style={{ marginRight: 'auto' }}
               >
                 {movie?.liked ? (
@@ -118,51 +117,15 @@ function MovieDetails(props) {
                   />
                 )}
               </IconButton>
-              {!primaryMovie || !secondaryMovie ? (
-                <Button
-                  disabled={selected ? true : false}
-                  variant="contained"
-                  color="secondary"
-                  style={{ marginLeft: 'auto' }}
-                  onClick={
-                    primaryMovie
-                      ? () =>
-                          handleSelection(
-                            movie,
-                            'secondary',
-                            currentDetails.imdbID
-                          )
-                      : () =>
-                          handleSelection(
-                            movie,
-                            'primary',
-                            currentDetails.imdbID
-                          )
-                  }
-                >
-                  {idArray.find((el) => el === currentDetails.imdbID)
-                    ? primaryMovie
-                      ? 'First Fighter'
-                      : 'Second Fighter'
-                    : 'Select'}
-                </Button>
-              ) : (
-                <>
-                  <FightModal
-                    handleSelection={handleSelection}
-                    handleReset={handleReset}
-                  />
-                  <RotateLeftIcon onClick={handleReset} cursor="pointer" />
-                </>
-              )}
               <Button
                 variant="outlined"
-                style={{ marginLeft: '1.5vw' }}
+                style={{ marginRight: '1.5vw' }}
                 component={RouterLink}
                 to="/"
               >
                 <KeyboardReturnIcon />
               </Button>
+
               <IconButton
                 className={clsx(classes.expand, {
                   [classes.expandOpen]: expanded,

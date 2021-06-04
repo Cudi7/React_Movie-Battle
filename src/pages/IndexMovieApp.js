@@ -10,25 +10,26 @@ import MovieDetails from '../components/MovieDetails/MovieDetails';
 import FightPage from './FightPage';
 import LikedMovies from './LikedMovies';
 import { MovieContext } from '../contexts/movie.context';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addFirstFighter,
+  addSecondFighter,
+} from '../store/entities/movieFightSlice';
 
 function MovieApp() {
   const [searchTerm, setSearchTerm] = useState('');
   const [timeoutId, setTimeoutId] = useState('');
 
   const [fightValues, setFightValues] = useState({});
-  const [figthersId, setFigthersId] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const [searchMovieList, setSearchMovieList] = useState([]);
 
-  const {
-    currentMovieList,
-    setCurrentMovieList,
-    setPrimaryMovie,
-    setSecondaryMovie,
-  } = useContext(MovieContext);
+  const { setPrimaryMovie, setSecondaryMovie } = useContext(MovieContext);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchMovieHandler = async () => {
@@ -64,24 +65,16 @@ function MovieApp() {
     setTimeout(() => setError(false), 3000);
   }
 
-  const handleLikes = (id) => {
-    const filteredList = currentMovieList.map((el) => {
-      if (el.imdbID === id) {
-        el.liked = !el.liked;
-      }
-      return el;
-    });
+  const handleSelection = (data, figtherNumber) => {
+    // const existingId = figthersId.find((el) => el === id);
 
-    setCurrentMovieList(filteredList);
-  };
+    const id = data.imdbID;
 
-  const handleSelection = (data, type, id) => {
-    const existingId = figthersId.find((el) => el === id);
-    if (existingId) return;
+    // if (existingId) return;
 
-    setFigthersId([...figthersId, id]);
-
-    type === 'primary' ? setPrimaryMovie(data) : setSecondaryMovie(data);
+    figtherNumber === 'primary'
+      ? dispatch(addFirstFighter(data))
+      : dispatch(addSecondFighter(data));
 
     const dataSelected = [];
 
@@ -89,13 +82,12 @@ function MovieApp() {
       dataSelected.push({ key: i, value: data[i] });
     }
 
-    type === 'primary'
+    figtherNumber === 'primary'
       ? setFightValues({ ...fightValues, primary: dataSelected })
       : setFightValues({ ...fightValues, secondary: dataSelected });
   };
 
   const handleReset = () => {
-    setFigthersId([]);
     setFightValues({});
     setSecondaryMovie('');
     setPrimaryMovie('');
@@ -116,23 +108,13 @@ function MovieApp() {
           <Grid container justify="center" style={{ marginTop: '1rem' }}>
             <Grid item xs={11} md={10} lg={9}>
               <Hero />
-              <Movies
-                handleSelection={handleSelection}
-                id={figthersId}
-                handleReset={handleReset}
-                handleLikes={handleLikes}
-              />
+              <Movies handleSelection={handleSelection} />
             </Grid>
           </Grid>
         </Route>
         <Route exact path="/details/:id">
           <NavBarSecondary />
-          <MovieDetails
-            idArray={figthersId}
-            handleSelection={handleSelection}
-            handleReset={handleReset}
-            handleLikes={handleLikes}
-          />
+          <MovieDetails />
         </Route>
         <Route exact path="/fight">
           <NavBarSecondary />

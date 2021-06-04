@@ -1,5 +1,11 @@
+import { createAction } from '@reduxjs/toolkit';
+
 const MAX_NUM = 9;
 const key = `17308409`;
+
+export const apiCallBegan = createAction('api/CallBegan');
+export const apiCallSuccess = createAction('api/CallSuccess');
+export const apiCallFailed = createAction('api/CallFailed');
 
 const fetchMovie = async (searchTerm, searchById) => {
   const res = searchById
@@ -34,7 +40,7 @@ const fetchInitialVal = async () => {
         );
         const data = await res.json();
 
-        initialMovies.push(data.Search[0]);
+        initialMovies.push({ ...data.Search[0], liked: false });
         titles.shift();
       } catch (error) {
         console.log(error.message);

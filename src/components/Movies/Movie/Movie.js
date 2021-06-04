@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -11,7 +11,6 @@ import useMovieStyles from './MovieStyles';
 import { useHistory } from 'react-router';
 import FightModal from '../../Modal/FightModal';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
-import { MovieContext } from '../../../contexts/movie.context';
 
 import IconButton from '@material-ui/core/IconButton';
 
@@ -22,52 +21,49 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SnackBar from '../../SnackBar/SnackBar';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteMovie, toggleLike } from '../../../store/ui/moviesSlice';
+import {
+  resetFighters,
+  selectFirstFighter,
+  selectSecondFighter,
+} from '../../../store/entities/movieFightSlice';
 
 function Movie(props) {
   const classes = useMovieStyles();
-  const { movie, handleSelection, id, handleReset, handleLikes } = props;
-  const {
-    primaryMovie,
-    secondaryMovie,
-    currentMovieList,
-    setCurrentMovieList,
-  } = useContext(MovieContext);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const { movie, handleSelection } = props;
 
+  const dispatch = useDispatch();
+  const firstFighter = useSelector(selectFirstFighter());
+  const secondFighter = useSelector(selectSecondFighter());
+
+  const [anchorEl, setAnchorEl] = useState(null);
   const [snackBarState, setSnackBarState] = useState(false);
 
   let history = useHistory();
 
-  const handleClick = (id) => {
-    history.push(`/details/${id}`);
-  };
+  const open = Boolean(anchorEl);
+  const selectedFirst = firstFighter.imdbID === movie.imdbID;
+  const selectedSecond = secondFighter.imdbID === movie.imdbID;
 
-  const selected = id.find((el) => el === movie.imdbID);
+  const handleClick = (id) => history.push(`/details/${id}`);
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleMenu = (event) => setAnchorEl(event.currentTarget);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleDeleteClick = (id) => {
-    const filteredList = currentMovieList.filter((el) => el.imdbID !== id);
-
-    setCurrentMovieList(filteredList);
-  };
+  const handleClose = () => setAnchorEl(null);
 
   const handleLikeState = (id) => {
-    handleLikes(id);
+    dispatch(toggleLike(id));
     setSnackBarState(true);
   };
 
-  const handleDeleteAction = (id) => {
-    handleDeleteClick(id);
-    handleReset();
+  const handleDelete = (id) => dispatch(deleteMovie(id));
+
+  const handleSelectionClick = (movie) => {
+    firstFighter.length === 0
+      ? handleSelection(movie, 'primary')
+      : handleSelection(movie, 'secondary');
   };
 
   return (
@@ -140,11 +136,11 @@ function Movie(props) {
               </IconButton>
               {movie?.liked ? (
                 <Typography onClick={() => handleLikeState(movie.imdbID)}>
-                  😁
+                  😍
                 </Typography>
               ) : (
                 <Typography onClick={() => handleLikeState(movie.imdbID)}>
-                  😐
+                  👍
                 </Typography>
               )}
             </MenuItem>
@@ -152,42 +148,38 @@ function Movie(props) {
             <MenuItem onClick={handleClose}>
               <IconButton
                 aria-label="delete"
-                onClick={() => handleDeleteAction(movie.imdbID)}
+                onClick={() => handleDelete(movie.imdbID)}
               >
                 <DeleteIcon />
               </IconButton>
-              <Typography onClick={() => handleDeleteAction(movie.imdbID)}>
+              <Typography onClick={() => handleDelete(movie.imdbID)}>
                 Delete
               </Typography>
             </MenuItem>
           </Menu>
         </div>
-        {!primaryMovie || !secondaryMovie ? (
+        {firstFighter.length === 0 || secondFighter.length === 0 ? (
           <Button
-            disabled={selected ? true : false}
+            disabled={selectedFirst || selectedSecond ? true : false}
             size="small"
             variant="contained"
             color="secondary"
             style={{ marginLeft: 'auto' }}
-            onClick={
-              primaryMovie
-                ? () => handleSelection(movie, 'secondary', movie.imdbID)
-                : () => handleSelection(movie, 'primary', movie.imdbID)
-            }
+            onClick={() => handleSelectionClick(movie)}
           >
-            {id.find((el) => el === movie.imdbID)
-              ? primaryMovie
-                ? 'First Fighter'
-                : 'Second Fighter'
+            {selectedFirst || selectedSecond
+              ? firstFighter.length === 0 || secondFighter.length === 0
+                ? 'Selected'
+                : 'Ready!'
               : 'Select Fighter'}
           </Button>
         ) : (
           <>
-            <FightModal
-              handleSelection={handleSelection}
-              handleReset={handleReset}
+            <FightModal handleSelection={handleSelection} />
+            <RotateLeftIcon
+              onClick={() => dispatch(resetFighters())}
+              cursor="pointer"
             />
-            <RotateLeftIcon onClick={handleReset} cursor="pointer" />
           </>
         )}
       </CardActions>

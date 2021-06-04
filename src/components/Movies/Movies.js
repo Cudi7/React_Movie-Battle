@@ -1,15 +1,16 @@
 import { Paper } from '@material-ui/core';
-import React, { useContext } from 'react';
+import React from 'react';
 import Loading from '../Loading/Loading';
 
-import { MovieContext } from '../../contexts/movie.context';
-
 import Movie from './Movie/Movie';
+import { useSelector } from 'react-redux';
+import { selectMovies, selectLoading } from '../../store/ui/moviesSlice';
 
 function Movies(props) {
-  const { handleSelection, id, handleReset, handleLikes } = props;
+  const { handleSelection } = props;
 
-  const { currentMovieList, loading } = useContext(MovieContext);
+  const currentMovieList = useSelector(selectMovies());
+  const loading = useSelector(selectLoading());
 
   return loading ? (
     <Loading from={'movies'} />
@@ -26,14 +27,7 @@ function Movies(props) {
     >
       {currentMovieList &&
         currentMovieList.map((movie, index) => (
-          <Movie
-            movie={movie}
-            key={index}
-            handleSelection={handleSelection}
-            id={id}
-            handleReset={handleReset}
-            handleLikes={handleLikes}
-          />
+          <Movie movie={movie} key={index} handleSelection={handleSelection} />
         ))}
     </Paper>
   );

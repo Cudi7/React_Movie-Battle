@@ -8,25 +8,19 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Link as RouterLink } from 'react-router-dom';
 import { MovieContext } from '../../contexts/movie.context';
+import { resetFighters } from '../../store/entities/movieFightSlice';
+import { useDispatch } from 'react-redux';
 
-function FightModal(props) {
+function FightModal() {
+  const { primaryMovie, secondaryMovie } = useContext(MovieContext);
   const [open, setOpen] = useState(false);
 
+  const dispatch = useDispatch();
   const classes = useModalStyles();
-  const { handleReset } = props;
-  const { primaryMovie, secondaryMovie } = useContext(MovieContext);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const redirect = () => {
-    console.log('redirecting...');
-  };
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const redirect = () => console.log('redirecting...');
 
   const accent = purple['A200'];
   return (
@@ -90,7 +84,7 @@ function FightModal(props) {
                 color="secondary"
                 size="small"
                 variant="contained"
-                onClick={handleReset}
+                onClick={() => dispatch(resetFighters())}
                 disableElevation
               >
                 Reset
