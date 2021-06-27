@@ -1,4 +1,4 @@
-import { apiCallBegan, fetchInitialVal } from '../../api/api';
+import { apiCallBegan, fetchInitialVal, fetchMovie } from '../../api/api';
 
 const apiMiddleware =
   ({ dispatch }) =>
@@ -6,7 +6,7 @@ const apiMiddleware =
   async (action) => {
     if (action.type !== apiCallBegan.type) return next(action);
 
-    const { data, onSuccess, onError, onStart } = action.payload;
+    const { data, onSuccess, onError, onStart, id } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
 
@@ -20,7 +20,12 @@ const apiMiddleware =
     next(action); //if we want the apiCallBegan to appear in redux devtools we need to specify this line, otherwise it will show only the other actions
 
     try {
-      const response = await fetchInitialVal();
+      //check if we want to fetch all movies or single movie(details)
+      const response =
+        onSuccess === 'movies/movieDetailsReceived'
+          ? await fetchMovie(id, 'searchById')
+          : await fetchInitialVal();
+
       dispatch({ type: onSuccess, payload: response });
     } catch (error) {
       dispatch({ type: onError, payload: error.message });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import Hero from '../components/Hero/Hero';
 import NavBar from '../components/NavBar/NavBar';
 import NavBarSecondary from '../components/NavBar/NavBarSecondary';
@@ -9,8 +9,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import MovieDetails from '../components/MovieDetails/MovieDetails';
 import FightPage from './FightPage';
 import LikedMovies from './LikedMovies';
-import { MovieContext } from '../contexts/movie.context';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   addFirstFighter,
   addSecondFighter,
@@ -20,14 +19,10 @@ function MovieApp() {
   const [searchTerm, setSearchTerm] = useState('');
   const [timeoutId, setTimeoutId] = useState('');
 
-  const [fightValues, setFightValues] = useState({});
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const [searchMovieList, setSearchMovieList] = useState([]);
-
-  const { setPrimaryMovie, setSecondaryMovie } = useContext(MovieContext);
 
   const dispatch = useDispatch();
 
@@ -66,16 +61,6 @@ function MovieApp() {
   }
 
   const handleSelection = (data, figtherNumber) => {
-    // const existingId = figthersId.find((el) => el === id);
-
-    const id = data.imdbID;
-
-    // if (existingId) return;
-
-    figtherNumber === 'primary'
-      ? dispatch(addFirstFighter(data))
-      : dispatch(addSecondFighter(data));
-
     const dataSelected = [];
 
     for (let i in data) {
@@ -83,14 +68,8 @@ function MovieApp() {
     }
 
     figtherNumber === 'primary'
-      ? setFightValues({ ...fightValues, primary: dataSelected })
-      : setFightValues({ ...fightValues, secondary: dataSelected });
-  };
-
-  const handleReset = () => {
-    setFightValues({});
-    setSecondaryMovie('');
-    setPrimaryMovie('');
+      ? dispatch(addFirstFighter(data))
+      : dispatch(addSecondFighter(data));
   };
 
   return (
@@ -118,12 +97,7 @@ function MovieApp() {
         </Route>
         <Route exact path="/fight">
           <NavBarSecondary />
-          <FightPage
-            fightValues={fightValues}
-            handleReset={handleReset}
-            setLoading={setLoading}
-            loading={loading}
-          />
+          <FightPage setLoading={setLoading} loading={loading} />
         </Route>
         <Route exact path="/likedMovies">
           <NavBarSecondary />

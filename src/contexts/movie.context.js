@@ -8,8 +8,6 @@ export const MovieContext = createContext();
 
 export function MovieProvider(props) {
   const [val, handleVal, restoreVal] = useLocalStorage('movies');
-  const [primaryMovie, setPrimaryMovie] = useState('');
-  const [secondaryMovie, setSecondaryMovie] = useState('');
   const [input, handleChange, reset] = useInput();
   const [loading, setLoading] = useState(false);
 
@@ -32,10 +30,6 @@ export function MovieProvider(props) {
   return (
     <MovieContext.Provider
       value={{
-        setPrimaryMovie,
-        primaryMovie,
-        setSecondaryMovie,
-        secondaryMovie,
         input,
         handleChange,
         reset,

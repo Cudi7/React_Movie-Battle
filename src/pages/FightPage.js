@@ -19,29 +19,31 @@ import { Link as RouterLink } from 'react-router-dom';
 import Hero from '../components/Hero/Hero';
 import Loading from '../components/Loading/Loading';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  resetFighters,
+  selectFirstFighter,
+  selectSecondFighter,
+} from '../store/entities/movieFightSlice';
 
-function FightPage(props) {
-  const { fightValues, handleReset } = props;
+function FightPage() {
   const [movieComparative, setMovieComparative] = useState('');
-
   const [movieItems, setMovieItems] = useState({});
-
   const [primaryWinCount, setPrimaryWinCount] = useState(0);
   const [secondaryWinCount, setSecondaryWinCount] = useState(0);
+
+  const dispatch = useDispatch();
+
+  const firstFighter = useSelector(selectFirstFighter());
+  const secondFighter = useSelector(selectSecondFighter());
 
   let history = useHistory();
 
   useEffect(() => {
     const handleSearch = async () => {
-      const first = await fetchMovie(
-        fightValues.primary[2].value,
-        'searchById'
-      );
+      const first = await fetchMovie(firstFighter.imdbID, 'searchById');
 
-      const second = await fetchMovie(
-        fightValues.secondary[2].value,
-        'searchById'
-      );
+      const second = await fetchMovie(secondFighter.imdbID, 'searchById');
 
       setMovieItems({
         ...movieItems,
@@ -50,7 +52,7 @@ function FightPage(props) {
       });
     };
 
-    fightValues.primary ? handleSearch() : history.push('/');
+    firstFighter ? handleSearch() : history.push('/');
   }, []);
 
   useEffect(() => {
@@ -185,7 +187,7 @@ function FightPage(props) {
             variant="outlined"
             component={RouterLink}
             to="/"
-            onClick={handleReset}
+            onClick={() => dispatch(resetFighters())}
           >
             Reset
           </Button>

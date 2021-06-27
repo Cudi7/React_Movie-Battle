@@ -31,7 +31,12 @@ import { formatedDataDetails } from '../../utils/formatedData';
 import Loading from '../Loading/Loading';
 import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMovies, toggleLike } from '../../store/ui/moviesSlice';
+import {
+  fetchMovieDetails,
+  selectMovieDetails,
+  selectMovies,
+  toggleLike,
+} from '../../store/ui/moviesSlice';
 
 function MovieDetails() {
   const [currentDetails, setCurrentDetails] = useState('');
@@ -45,6 +50,7 @@ function MovieDetails() {
   const currentMovieList = useSelector(selectMovies());
 
   const dispatch = useDispatch();
+  const movieDetails = useSelector(selectMovieDetails());
 
   let { id } = useParams();
 
@@ -54,12 +60,14 @@ function MovieDetails() {
   };
 
   useEffect(() => {
-    const handleDetailsFetch = async () => {
-      const data = await fetchMovie(id, 'searchById');
+    const handleDetailsFetch = () => {
+      dispatch(fetchMovieDetails(id));
 
-      const detailsObject = formatedDataDetails(data);
+      const detailsObject = formatedDataDetails(movieDetails);
 
-      setCurrentDetails(data);
+      console.log(movieDetails);
+
+      setCurrentDetails(movieDetails);
       setDetailsObject(detailsObject);
       setMovie(currentMovieList.find((el) => el.imdbID === id));
       setLoadingDetails(false);

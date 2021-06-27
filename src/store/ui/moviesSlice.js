@@ -7,6 +7,7 @@ const initialMoviesSlice = createSlice({
   name: 'movies',
   initialState: {
     list: [],
+    listDetails: {},
     loading: false,
   },
   reducers: {
@@ -14,7 +15,6 @@ const initialMoviesSlice = createSlice({
       state.loading = true;
     },
     moviesReceived: (state, action) => {
-      console.log(action.payload);
       state.loading = false;
 
       state.list = action.payload.map((el) => {
@@ -24,6 +24,11 @@ const initialMoviesSlice = createSlice({
           return { ...el, liked: false };
         }
       });
+    },
+
+    movieDetailsReceived: (state, action) => {
+      state.loading = false;
+      state.listDetails = action.payload;
     },
     moviesFailed: (state, action) => {
       state.loading = false;
@@ -56,6 +61,7 @@ const {
   movieAdded,
   movieDeleted,
   movieToggledLike,
+  movieDetailsReceived,
 } = initialMoviesSlice.actions;
 
 //ACTION CREATORS******************************************************************************************
@@ -67,6 +73,17 @@ export const fetchInitialMovies = (data) => async (dispatch, getState) => {
       onSuccess: moviesReceived.type,
       onError: moviesFailed.type,
       data: data ? data : null,
+    })
+  );
+};
+
+export const fetchMovieDetails = (id) => async (dispatch, getState) => {
+  dispatch(
+    apiCallBegan({
+      onStart: moviesRequested.type,
+      onSuccess: movieDetailsReceived.type,
+      onError: moviesFailed.type,
+      id,
     })
   );
 };
@@ -95,4 +112,10 @@ export const selectLoading = (state) =>
   createSelector(
     (state) => state.ui.movies.loading,
     (loading) => loading
+  );
+
+export const selectMovieDetails = (state) =>
+  createSelector(
+    (state) => state.ui.movies.listDetails,
+    (listDetails) => listDetails
   );

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import Modal from '@material-ui/core/Modal';
 import useModalStyles from './FightModalStyles';
@@ -7,13 +7,17 @@ import purple from '@material-ui/core/colors/purple';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Link as RouterLink } from 'react-router-dom';
-import { MovieContext } from '../../contexts/movie.context';
-import { resetFighters } from '../../store/entities/movieFightSlice';
-import { useDispatch } from 'react-redux';
+import {
+  resetFighters,
+  selectFirstFighter,
+  selectSecondFighter,
+} from '../../store/entities/movieFightSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function FightModal() {
-  const { primaryMovie, secondaryMovie } = useContext(MovieContext);
   const [open, setOpen] = useState(false);
+  const firstFighter = useSelector(selectFirstFighter());
+  const secondFighter = useSelector(selectSecondFighter());
 
   const dispatch = useDispatch();
   const classes = useModalStyles();
@@ -61,11 +65,11 @@ function FightModal() {
               }}
             >
               <Typography variant="body2">
-                {primaryMovie && primaryMovie.Title}
+                {firstFighter && firstFighter.Title}
               </Typography>
               <Typography variant="overline">🔪VS🔪</Typography>
               <Typography variant="body2">
-                {secondaryMovie && secondaryMovie.Title}
+                {secondFighter && secondFighter.Title}
               </Typography>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
