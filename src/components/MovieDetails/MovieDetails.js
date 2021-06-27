@@ -47,9 +47,9 @@ function MovieDetails() {
   const [loadingDetails, setLoadingDetails] = useState(true);
   const classes = useMovieDetailsStyles();
 
-  const currentMovieList = useSelector(selectMovies());
-
   const dispatch = useDispatch();
+
+  const currentMovieList = useSelector(selectMovies());
   const movieDetails = useSelector(selectMovieDetails());
 
   let { id } = useParams();
@@ -62,19 +62,22 @@ function MovieDetails() {
   useEffect(() => {
     const handleDetailsFetch = () => {
       dispatch(fetchMovieDetails(id));
-
-      const detailsObject = formatedDataDetails(movieDetails);
-
-      console.log(movieDetails);
-
-      setCurrentDetails(movieDetails);
-      setDetailsObject(detailsObject);
-      setMovie(currentMovieList.find((el) => el.imdbID === id));
-      setLoadingDetails(false);
     };
 
     id && handleDetailsFetch();
   }, [id, currentMovieList]);
+
+  useEffect(() => {
+    if (movieDetails.Title) {
+      setCurrentDetails(movieDetails);
+
+      const detailsObject = formatedDataDetails(movieDetails);
+      setDetailsObject(detailsObject);
+
+      setMovie(currentMovieList.find((el) => el.imdbID === id));
+      setLoadingDetails(false);
+    }
+  }, [movieDetails]);
 
   const handleLikeState = (id) => {
     dispatch(toggleLike(id));
